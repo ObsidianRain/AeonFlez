@@ -1,4 +1,4 @@
-        <!-- Notebook Page -->
+<!-- Notebook Page -->
         <div class="page" id="notebook">
             <div class="page-header">
                 <h1 class="page-title">Journals & Jots</h1>
@@ -907,6 +907,16 @@
             color: var(--text-light);
         }
 
+        @media (max-width: 1024px) {
+            .financial-dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .graph-legend {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
             .top-nav {
                 display: none;
@@ -914,6 +924,7 @@
             
             .sidebar {
                 transform: translateX(-100%);
+                width: 240px;
             }
             
             .sidebar.mobile-open {
@@ -922,11 +933,17 @@
             
             .main-content {
                 margin-left: 0;
-                padding: 20px;
+                padding: 15px;
             }
             
-            .financial-dashboard {
+            .sidebar-toggle {
+                left: 10px;
+                top: 80px;
+            }
+            
+            .card-grid {
                 grid-template-columns: 1fr;
+                gap: 15px;
             }
             
             .template-grid {
@@ -936,6 +953,37 @@
             .note-actions, .note-toolbar {
                 flex-direction: column;
             }
+            
+            .menu-container {
+                padding: 0 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .top-menu {
+                height: 60px;
+            }
+            
+            body {
+                padding-top: 60px;
+            }
+            
+            .sidebar {
+                top: 60px;
+                height: calc(100vh - 60px);
+            }
+            
+            .main-content {
+                min-height: calc(100vh - 60px);
+            }
+            
+            .card {
+                padding: 15px;
+            }
+            
+            .page-title {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
@@ -943,6 +991,10 @@
     <div class="sync-indicator" id="syncIndicator">
         ✓ Synced with AeonFlez App
     </div>
+
+    <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">
+        ◀
+    </button>
 
     <!-- Top Menu Bar -->
     <header class="top-menu">
@@ -1024,7 +1076,7 @@
                 </a>
             </li>
         </ul>
-
+        
         <div class="sidebar-bottom">
             <div class="theme-icon-container">
                 <a href="#" class="theme-icon-link" data-page="themes">
@@ -1066,7 +1118,7 @@
                 <h1 class="page-title">Dashboard</h1>
                 <p class="page-subtitle">Your command center overview</p>
             </div>
-
+            
             <div class="card-grid">
                 <div class="card stat-card">
                     <div class="stat-number" id="totalTasks">24</div>
@@ -1193,7 +1245,7 @@
                 <h1 class="page-title">Tracker</h1>
                 <p class="page-subtitle">Monitor your habits and progress</p>
             </div>
-
+            
             <div class="card-grid">
                 <div class="card">
                     <h3>Habit Tracking</h3>
@@ -1218,7 +1270,7 @@
                 <h1 class="page-title">Calendar</h1>
                 <p class="page-subtitle">Manage your schedule and events</p>
             </div>
-
+            
             <div class="card">
                 <h3>Monthly View - July 2025</h3>
                 <div class="calendar-grid" id="calendarGrid">
@@ -1233,7 +1285,7 @@
                 <h1 class="page-title">Notebook & Jots</h1>
                 <p class="page-subtitle">Capture your thoughts and ideas</p>
             </div>
-
+            
             <div class="card-grid">
                 <div class="card">
                     <h3>Quick Jot</h3>
@@ -1257,7 +1309,7 @@
                 <h1 class="page-title">Files</h1>
                 <p class="page-subtitle">Manage your documents and uploads</p>
             </div>
-
+            
             <div class="card">
                 <div class="file-upload" onclick="document.getElementById('fileInput').click()">
                     <h3>📁 Drop files here or click to upload</h3>
@@ -1273,7 +1325,7 @@
                 <h1 class="page-title">Logs</h1>
                 <p class="page-subtitle">View system activity and sync history</p>
             </div>
-
+            
             <div class="card">
                 <h3>System Logs</h3>
                 <div id="systemLogs">
@@ -1291,14 +1343,14 @@
                 <h1 class="page-title">Settings</h1>
                 <p class="page-subtitle">Configure your AeonFlez experience</p>
             </div>
-
+            
             <div class="card-grid">
                 <div class="card">
                     <h3>🔗 Connections</h3>
                     <p>Manage API connections to external services</p>
                     <button class="btn btn-primary" onclick="navigateToPage('connections')">Manage Connections</button>
                 </div>
-
+                
                 <div class="card">
                     <h3>App Sync Settings</h3>
                     <div class="input-group">
@@ -1312,7 +1364,7 @@
                     </div>
                     <button class="btn btn-primary">Save Settings</button>
                 </div>
-
+                
                 <div class="card">
                     <h3>Notifications</h3>
                     <label><input type="checkbox" checked> Email notifications</label><br>
@@ -1320,7 +1372,7 @@
                     <label><input type="checkbox"> SMS alerts</label><br>
                     <label><input type="checkbox" checked> Audio note transcription alerts</label>
                 </div>
-
+                
                 <div class="card">
                     <h3>🎯 Tracker Settings</h3>
                     <div class="tracker-settings">
@@ -1352,7 +1404,7 @@
                 <h1 class="page-title">Profile</h1>
                 <p class="page-subtitle">Manage your personal settings and preferences</p>
             </div>
-
+            
             <div class="card-grid">
                 <div class="card">
                     <h3>Personal Information</h3>
@@ -1395,7 +1447,7 @@
                 <h1 class="page-title">Resources</h1>
                 <p class="page-subtitle">Tools, guides, and helpful materials</p>
             </div>
-
+            
             <div class="card-grid">
                 <div class="card">
                     <h3>📚 Learning Resources</h3>
@@ -1433,7 +1485,7 @@
                 <h1 class="page-title">Deep Dive</h1>
                 <p class="page-subtitle">Advanced analytics and insights</p>
             </div>
-
+            
             <div class="card-grid">
                 <div class="card">
                     <h3>🔍 Data Analysis</h3>
@@ -1466,7 +1518,7 @@
                 <h1 class="page-title">FAQ</h1>
                 <p class="page-subtitle">Frequently Asked Questions</p>
             </div>
-
+            
             <div class="card">
                 <div class="faq-item">
                     <h3>How do I connect my bank account?</h3>
@@ -1493,7 +1545,7 @@
                 <h1 class="page-title">Links</h1>
                 <p class="page-subtitle">Quick access to external resources</p>
             </div>
-
+            
             <div class="card-grid">
                 <div class="card">
                     <h3>🏦 Financial Services</h3>
@@ -1531,7 +1583,7 @@
                 <h1 class="page-title">Connections</h1>
                 <p class="page-subtitle">Manage API connections to external services</p>
             </div>
-
+            
             <div class="card-grid">
                 <div class="card">
                     <h3>Add New API Connection</h3>
@@ -1576,7 +1628,7 @@
                 <h1 class="page-title">Themes</h1>
                 <p class="page-subtitle">Customize your visual experience</p>
             </div>
-
+            
             <div class="card">
                 <h3>Choose Your Style</h3>
                 <div class="theme-selector">
@@ -1593,9 +1645,54 @@
     </main>
 
     <script>
+        // Sidebar toggle functionality
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            const toggleBtn = document.getElementById('sidebarToggle');
+            
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('sidebar-collapsed');
+            toggleBtn.classList.toggle('collapsed');
+            
+            if (sidebar.classList.contains('collapsed')) {
+                toggleBtn.innerHTML = '▶';
+            } else {
+                toggleBtn.innerHTML = '◀';
+            }
+        }
+
+        // Handle mobile sidebar
+        function toggleMobileSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('mobile-open');
+        }
+
+        // Auto-collapse sidebar on small screens
+        function handleResize() {
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            const toggleBtn = document.getElementById('sidebarToggle');
+            
+            if (window.innerWidth <= 768) {
+                sidebar.classList.remove('collapsed');
+                mainContent.classList.remove('sidebar-collapsed');
+                toggleBtn.onclick = toggleMobileSidebar;
+                toggleBtn.innerHTML = '☰';
+            } else {
+                sidebar.classList.remove('mobile-open');
+                toggleBtn.onclick = toggleSidebar;
+                if (sidebar.classList.contains('collapsed')) {
+                    toggleBtn.innerHTML = '▶';
+                } else {
+                    toggleBtn.innerHTML = '◀';
+                }
+            }
+        }
+
         // Navigation functionality
         document.querySelectorAll('.nav-link, .nav-sublink, .top-nav-link, .theme-icon-link').forEach(link => {
-            link.addEventListener('click', function (e) {
+            link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const pageId = this.getAttribute('data-page');
                 if (pageId) {
@@ -1608,7 +1705,7 @@
             // Remove active class from all links and pages
             document.querySelectorAll('.nav-link, .nav-sublink, .top-nav-link, .theme-icon-link').forEach(l => l.classList.remove('active'));
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-
+            
             // Add active class to corresponding links and page
             document.querySelectorAll(`[data-page="${pageId}"]`).forEach(l => l.classList.add('active'));
             document.getElementById(pageId).classList.add('active');
@@ -1618,10 +1715,10 @@
         function createOverlapChart() {
             const canvas = document.getElementById('overlapChart');
             const ctx = canvas.getContext('2d');
-
+            
             // Clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+            
             // Create gradient fills
             const gradients = {
                 financial: createGradient(ctx, 'rgba(102, 126, 234, 0.7)', 'rgba(102, 126, 234, 0.3)'),
@@ -1629,7 +1726,7 @@
                 productivity: createGradient(ctx, 'rgba(250, 112, 154, 0.7)', 'rgba(250, 112, 154, 0.3)'),
                 learning: createGradient(ctx, 'rgba(79, 172, 254, 0.7)', 'rgba(79, 172, 254, 0.3)')
             };
-
+            
             // Draw overlapping areas
             drawArea(ctx, gradients.financial, generateWaveData(0));
             drawArea(ctx, gradients.health, generateWaveData(50));
@@ -1648,7 +1745,7 @@
             const points = [];
             for (let i = 0; i <= 400; i += 10) {
                 const y = 125 + Math.sin((i + offset) * 0.02) * 40 + Math.cos((i + offset) * 0.01) * 20;
-                points.push({ x: i, y: y });
+                points.push({x: i, y: y});
             }
             return points;
         }
@@ -1657,11 +1754,11 @@
             ctx.fillStyle = gradient;
             ctx.beginPath();
             ctx.moveTo(points[0].x, 250);
-
+            
             points.forEach(point => {
                 ctx.lineTo(point.x, point.y);
             });
-
+            
             ctx.lineTo(400, 250);
             ctx.closePath();
             ctx.fill();
@@ -1674,7 +1771,7 @@
             if (logContent) {
                 const timestamp = new Date().toISOString();
                 const logEntry = `${timestamp.split('T')[0]}-${logType}-none-${logContent}-general-quicklog`;
-
+                
                 // Add to logs page
                 addLogEntry(logEntry);
                 alert('Log saved successfully!');
@@ -1723,9 +1820,9 @@
 
         function useTemplate() {
             const templates = ['Meeting Notes', 'Daily Review', 'Project Planning', 'Brainstorming'];
-            const choice = prompt(`Choose template:\n${templates.map((t, i) => `${i + 1}. ${t}`).join('\n')}`);
+            const choice = prompt(`Choose template:\n${templates.map((t, i) => `${i+1}. ${t}`).join('\n')}`);
             if (choice) {
-                loadTemplate(templates[parseInt(choice) - 1] || 'meeting');
+                loadTemplate(templates[parseInt(choice)-1] || 'meeting');
             }
         }
 
@@ -1748,7 +1845,7 @@
                     content: '# Brainstorming\n\n**Topic:** \n**Goal:** \n\n## Ideas\n\n## Next Actions\n'
                 }
             };
-
+            
             const template = templates[templateType] || templates.meeting;
             document.getElementById('noteTitle').value = template.title;
             document.getElementById('noteContent').value = template.content;
@@ -1774,7 +1871,7 @@
             const service = document.querySelector('input[placeholder*="Todoist"]').value;
             const apiKey = document.querySelector('input[type="password"]').value;
             const endpoint = document.querySelector('input[type="url"]').value;
-
+            
             if (service && apiKey && endpoint) {
                 alert(`Connection to ${service} established successfully!`);
                 simulateSync();
@@ -1801,7 +1898,7 @@
         function simulateSync() {
             const indicator = document.getElementById('syncIndicator');
             indicator.classList.add('show');
-
+            
             setTimeout(() => {
                 indicator.classList.remove('show');
             }, 2000);
@@ -1811,7 +1908,7 @@
         function generateCalendar() {
             const calendarGrid = document.getElementById('calendarGrid');
             const today = new Date().getDate();
-
+            
             // Days of week headers
             const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             days.forEach(day => {
@@ -1822,7 +1919,7 @@
                 dayHeader.style.textAlign = 'center';
                 calendarGrid.appendChild(dayHeader);
             });
-
+            
             // Generate calendar days (simplified)
             for (let i = 1; i <= 31; i++) {
                 const dayElement = document.createElement('div');
@@ -1883,7 +1980,7 @@
                 option.classList.remove('active');
             });
             event.target.classList.add('active');
-
+            
             // Apply theme (simplified - in real app, this would change CSS variables)
             document.body.setAttribute('data-theme', themeName);
         }
@@ -1893,10 +1990,14 @@
         }
 
         // Initialize
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             generateCalendar();
             createOverlapChart();
-
+            handleResize();
+            
+            // Add resize listener
+            window.addEventListener('resize', handleResize);
+            
             // Simulate periodic sync
             setInterval(() => {
                 if (Math.random() > 0.7) {
@@ -1906,50 +2007,11 @@
         });
 
         // File upload handling
-        document.getElementById('fileInput').addEventListener('change', function (e) {
+        document.getElementById('fileInput').addEventListener('change', function(e) {
             const files = Array.from(e.target.files);
             alert(`${files.length} file(s) uploaded successfully!`);
             simulateSync();
         });
-        // Add these missing functions before the closing </script> tag
-
-    function addTask() {
-    const task = prompt('Enter a new task:');
-    if (task) {
-    alert('Task added: ' + task);
-    simulateSync();
-    }
-    }
-
-    function updateTaskProject() {
-    const update = prompt('Enter task/project update:');
-    if (update) {
-    alert('Task/Project updated: ' + update);
-    simulateSync();
-    }
-    }
-
-    function editNote(id) {
-    alert('Editing note ' + id + '...');
-    }
-
-    function shareNote(id) {
-    alert('Sharing note ' + id + '...');
-    }
-
-    function deleteNote(id) {
-    if (confirm('Delete this note?')) {
-    alert('Note ' + id + ' deleted');
-    }
-    }
-
-    function addNoteToEvent() {
-    alert('Adding note to calendar event...');
-    }
-
-    function viewProject(id) {
-    alert('Opening project: ' + id);
-    }
     </script>
 </body>
 </html>
