@@ -915,6 +915,14 @@
             .graph-legend {
                 grid-template-columns: repeat(2, 1fr);
             }
+            
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .template-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 768px) {
@@ -952,10 +960,26 @@
             
             .note-actions, .note-toolbar {
                 flex-direction: column;
+                gap: 8px;
+            }
+            
+            .note-toolbar .btn-small {
+                width: 100%;
+                margin-bottom: 5px;
             }
             
             .menu-container {
                 padding: 0 15px;
+            }
+            
+            .note-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .note-actions-mini {
+                margin-top: 10px;
+                align-self: flex-end;
             }
         }
 
@@ -975,6 +999,7 @@
             
             .main-content {
                 min-height: calc(100vh - 60px);
+                padding: 10px;
             }
             
             .card {
@@ -983,6 +1008,25 @@
             
             .page-title {
                 font-size: 1.8rem;
+            }
+            
+            .template-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .note-toolbar {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .note-actions {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .btn, .btn-small {
+                width: 100%;
+                margin-bottom: 5px;
             }
         }
     </style>
