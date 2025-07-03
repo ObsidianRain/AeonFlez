@@ -1,0 +1,572 @@
+# 🔧 Issues and Solutions
+
+This document tracks common issues, their solutions, and troubleshooting steps for AeonFlez development and usage.
+
+## 📊 Issue Status Dashboard
+
+<div align="center">
+
+### 🎯 **Current Status Overview**
+
+</div>
+
+<table>
+<tr>
+<td width="33%" align="center">
+
+### ✅ **RESOLVED**
+**Total: 3 Issues**
+
+</td>
+<td width="33%" align="center">
+
+### 🔄 **IN PROGRESS** 
+**Total: 2 Issues**
+
+</td>
+<td width="33%" align="center">
+
+### 🆕 **NEW/OPEN**
+**Total: 4 Issues**
+
+</td>
+</tr>
+</table>
+
+---
+
+### 📋 **Issue Tracking Board**
+
+| Issue ID | Status | Title | Date | Priority |
+|----------|--------|-------|------|----------|
+| **#001** | 🟢 **RESOLVED** | Page Too Wide - Horizontal Scrolling Required | *2025-01-03* | **High** |
+| **#002** | 🟢 **RESOLVED** | Sidebar Collapse Not Working on Mobile | *2025-01-02* | **Medium** |
+| **#003** | 🟢 **RESOLVED** | Charts Not Rendering in Firefox | *2025-01-02* | **Medium** |
+| **#004** | 🟡 **IN PROGRESS** | Theme Changes Not Persisting | *2025-01-01* | **Low** |
+| **#005** | 🟢 **RESOLVED** | Quick Log Format Inconsistent | *2025-01-03* | **Medium** |
+| **#006** | 🟡 **IN PROGRESS** | Real-time Sync Implementation | *2025-01-01* | **High** |
+| **#007** | ⚪ **NEW** | Audio Notes Functionality Missing | *2025-01-03* | **Medium** |
+| **#008** | ⚪ **NEW** | API Integration Framework Needed | *2025-01-03* | **High** |
+| **#009** | ⚪ **NEW** | Offline Mode Support | *2025-01-03* | **Low** |
+| **#010** | ⚪ **NEW** | User Authentication System | *2025-01-03* | **High** |
+
+---
+
+### 🎨 **Status Legend**
+- 🟢 **RESOLVED** - Issue has been fixed and tested
+- 🟡 **IN PROGRESS** - Currently being worked on
+- ⚪ **NEW/OPEN** - Identified but not yet started
+- 🔴 **CRITICAL** - Urgent issues requiring immediate attention
+- 🔵 **ENHANCEMENT** - Feature improvements and optimizations
+
+---
+
+### 📈 **Resolution Timeline**
+
+```
+January 2025
+┌─────────────────────────────────────────────────────────┐
+│ Jan 1    Jan 2    Jan 3    Jan 4    Jan 5    Jan 6      │
+│   │        │        │        │        │        │        │
+│   #004     #002     #001     │        │        │        │
+│   #006     #003     #005     │        │        │        │
+│   ↓        ↓        ↓        │        │        │        │
+│  Start    Fixed    Fixed     │        │        │        │
+│           ✅       ✅       │        │        │        │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+### 🏆 **Monthly Resolution Stats**
+
+| Month | Resolved | In Progress | New | Total |
+|-------|----------|-------------|-----|-------|
+| **Jan 2025** | **4** 🟢 | **2** 🟡 | **4** ⚪ | **10** |
+| **Dec 2024** | **0** | **0** | **0** | **0** |
+
+---
+
+### 🎯 **Priority Breakdown**
+
+<div align="center">
+
+| **HIGH** 🔴 | **MEDIUM** 🟡 | **LOW** 🟢 |
+|-------------|---------------|------------|
+| 3 Issues | 4 Issues | 3 Issues |
+
+</div>
+
+---
+
+### 📝 **Recent Activity**
+
+| Date | Action | Issue | Description |
+|------|--------|-------|-------------|
+| **2025-01-03** | ✅ **RESOLVED** | #001 | Fixed page width issue in Journals & Jots |
+| **2025-01-03** | ✅ **RESOLVED** | #005 | Standardized log entry format |
+| **2025-01-03** | 🆕 **OPENED** | #007-#010 | Added new feature requests |
+| **2025-01-02** | ✅ **RESOLVED** | #002 | Fixed mobile sidebar toggle |
+| **2025-01-02** | ✅ **RESOLVED** | #003 | Fixed Firefox chart rendering |
+| **2025-01-01** | 🟡 **STARTED** | #004 | Theme persistence implementation |
+| **2025-01-01** | 🟡 **STARTED** | #006 | Real-time sync development |
+
+---
+
+## 📋 Table of Contents
+
+- [Common Issues](#-common-issues)
+- [Browser Compatibility](#-browser-compatibility)
+- [Layout Problems](#-layout-problems)
+- [JavaScript Errors](#-javascript-errors)
+- [Performance Issues](#-performance-issues)
+- [Mobile Responsiveness](#-mobile-responsiveness)
+- [API Integration Problems](#-api-integration-problems)
+- [Deployment Issues](#-deployment-issues)
+- [User Experience Issues](#-user-experience-issues)
+- [Development Environment](#-development-environment)
+
+## 🚨 Common Issues
+
+### Issue #001: Page Too Wide - Horizontal Scrolling Required
+**Problem**: Journals and Jots page requires browser zoom at 25% to view entire content
+**Status**: ✅ Fixed in v1.0.1
+**Solution**: Adjusted CSS grid layout and max-width constraints
+
+**Details**:
+- **Cause**: Grid columns were set to fixed widths without proper responsive constraints
+- **Fix**: Changed grid-template-columns from fixed values to flexible fr units
+- **Code Change**: Updated `.card-grid` and `.note-toolbar` CSS rules
+
+### Issue #002: Sidebar Collapse Not Working on Mobile
+**Problem**: Sidebar toggle button doesn't function properly on mobile devices
+**Status**: ✅ Fixed
+**Solution**: Added proper event handlers for touch devices
+
+**Details**:
+```javascript
+// Before (problematic)
+toggleBtn.onclick = toggleSidebar;
+
+// After (fixed)
+toggleBtn.addEventListener('click', toggleSidebar);
+toggleBtn.addEventListener('touchstart', toggleSidebar);
+```
+
+### Issue #003: Charts Not Rendering in Firefox
+**Problem**: Canvas-based analytics charts don't display in Firefox
+**Status**: ✅ Fixed
+**Solution**: Added Firefox-specific canvas context handling
+
+**Details**:
+- **Cause**: Firefox requires explicit canvas context type
+- **Fix**: Added fallback for different browsers
+- **Code**: Updated `createOverlapChart()` function
+
+### Issue #004: Theme Changes Not Persisting
+**Problem**: Selected themes reset after page refresh
+**Status**: 🔄 In Progress
+**Solution**: Implement localStorage for theme persistence
+
+**Workaround**:
+```javascript
+// Temporary fix - add to theme selection
+function setTheme(themeName) {
+    localStorage.setItem('aeonflez-theme', themeName);
+    // Apply theme logic
+}
+```
+
+### Issue #005: Quick Log Format Inconsistent
+**Problem**: Log entries don't follow the specified format consistently
+**Status**: ✅ Fixed
+**Solution**: Standardized log format function
+
+**Details**:
+```javascript
+// Fixed format: date-type-files-log-category-tags
+function formatLogEntry(type, content, category = 'general', tags = '') {
+    const timestamp = new Date().toISOString().split('T')[0];
+    return `${timestamp}-${type}-none-${content}-${category}-${tags}`;
+}
+```
+
+## 🌐 Browser Compatibility
+
+### Chrome Issues
+- **Issue**: Smooth scrolling conflicts with custom animations
+- **Solution**: Disabled smooth scrolling in CSS for Chrome
+- **Code**: `scroll-behavior: auto;` for Chrome-specific media queries
+
+### Firefox Issues
+- **Issue**: CSS Grid gaps render differently
+- **Solution**: Use consistent gap values with fallbacks
+- **Code**: Added `-moz-` prefixes for Firefox compatibility
+
+### Safari Issues
+- **Issue**: Backdrop filter not supported in older versions
+- **Solution**: Added fallback background colors
+- **Code**: Progressive enhancement with `@supports` queries
+
+### Edge Issues
+- **Issue**: CSS custom properties not updating dynamically
+- **Solution**: Force repaint after theme changes
+- **Code**: Added `style.display = 'none'` then `style.display = 'block'`
+
+## 📐 Layout Problems
+
+### Responsive Design Issues
+
+#### Mobile Layout Breaking
+**Problem**: Cards overlap on screens smaller than 480px
+**Solution**: 
+```css
+@media (max-width: 480px) {
+    .card-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .card {
+        padding: 15px;
+        margin: 0;
+    }
+}
+```
+
+#### Sidebar Overlapping Content
+**Problem**: Sidebar covers main content on tablet sizes
+**Solution**: Adjusted breakpoints and margins
+```css
+@media (max-width: 1024px) {
+    .main-content {
+        margin-left: 0;
+        padding-left: 260px;
+    }
+}
+```
+
+### Grid Layout Issues
+
+#### Cards Not Filling Space
+**Problem**: Cards have inconsistent heights in grid layout
+**Solution**: Used CSS Grid with proper alignment
+```css
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    align-items: start; /* Key fix */
+}
+```
+
+#### Text Overflow in Cards
+**Problem**: Long text breaks card layout
+**Solution**: Added text truncation and word wrapping
+```css
+.card-content {
+    overflow-wrap: break-word;
+    hyphens: auto;
+    max-width: 100%;
+}
+```
+
+## 🔧 JavaScript Errors
+
+### Common JavaScript Issues
+
+#### Function Not Defined Errors
+**Problem**: Functions called before definition
+**Solution**: Moved function declarations to top or used function expressions
+```javascript
+// Before (problematic)
+button.onclick = myFunction;
+function myFunction() { ... }
+
+// After (fixed)
+function myFunction() { ... }
+button.onclick = myFunction;
+```
+
+#### Async/Await Errors
+**Problem**: Promises not properly handled
+**Solution**: Added proper error handling
+```javascript
+// Fixed pattern
+async function fetchData() {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return await response.json();
+    } catch (error) {
+        console.error('Fetch error:', error);
+        throw error;
+    }
+}
+```
+
+#### Event Listener Memory Leaks
+**Problem**: Event listeners not properly removed
+**Solution**: Store references and clean up
+```javascript
+// Proper cleanup
+function cleanup() {
+    document.removeEventListener('resize', handleResize);
+    clearInterval(syncInterval);
+}
+```
+
+## ⚡ Performance Issues
+
+### Slow Page Load
+**Problem**: Large CSS and JavaScript files
+**Solution**: 
+- Minified inline styles and scripts
+- Removed unused CSS rules
+- Optimized image assets
+
+### Chart Rendering Lag
+**Problem**: Canvas animations causing frame drops
+**Solution**: 
+- Reduced animation complexity
+- Added requestAnimationFrame for smooth updates
+- Implemented debouncing for resize events
+
+### Memory Usage
+**Problem**: Memory leaks in long-running sessions
+**Solution**:
+- Proper event listener cleanup
+- Interval clearing on page unload
+- DOM element reference cleanup
+
+## 📱 Mobile Responsiveness
+
+### Touch Events
+**Problem**: Hover effects don't work on mobile
+**Solution**: Added touch event handlers
+```css
+.button:hover,
+.button:focus,
+.button:active {
+    /* Hover styles */
+}
+
+/* Mobile-specific touches */
+@media (hover: none) {
+    .button:active {
+        /* Touch feedback */
+    }
+}
+```
+
+### Viewport Issues
+**Problem**: Content too small on mobile devices
+**Solution**: Proper viewport meta tag
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+```
+
+### Navigation Problems
+**Problem**: Small touch targets
+**Solution**: Increased minimum touch target size
+```css
+.nav-link {
+    min-height: 44px; /* iOS guideline */
+    padding: 12px 15px;
+}
+```
+
+## 🔌 API Integration Problems
+
+### CORS Issues
+**Problem**: Cross-origin requests blocked
+**Solution**: 
+- Use proxy server for development
+- Implement proper CORS headers on backend
+- Use JSONP for supported APIs
+
+### Authentication Failures
+**Problem**: API keys not working
+**Solution**: 
+- Verify API key format and permissions
+- Check rate limiting
+- Implement proper error handling
+
+### Rate Limiting
+**Problem**: Too many API requests
+**Solution**: 
+- Implement request throttling
+- Add retry logic with exponential backoff
+- Cache responses when possible
+
+## 🚀 Deployment Issues
+
+### GitHub Pages Problems
+
+#### Site Not Loading
+**Problem**: GitHub Pages shows 404 error
+**Solution**: 
+- Ensure file is named `index.html`
+- Check repository settings
+- Verify Pages is enabled
+
+#### Updates Not Reflecting
+**Problem**: Changes don't appear on live site
+**Solution**: 
+- Clear browser cache
+- Wait 5-10 minutes for deployment
+- Check GitHub Actions for build status
+
+### Asset Loading Issues
+**Problem**: CSS/JS not loading properly
+**Solution**: 
+- Use relative paths
+- Verify file permissions
+- Check for syntax errors
+
+## 👥 User Experience Issues
+
+### Navigation Confusion
+**Problem**: Users can't find features
+**Solution**: 
+- Added breadcrumb navigation
+- Improved menu organization
+- Added search functionality
+
+### Form Validation
+**Problem**: Poor error messaging
+**Solution**: 
+- Added real-time validation
+- Improved error messages
+- Added success feedback
+
+### Loading States
+**Problem**: No feedback during operations
+**Solution**: 
+- Added loading spinners
+- Implemented progress indicators
+- Added success/error messages
+
+## 🛠 Development Environment
+
+### VS Code Issues
+
+#### Live Server Not Working
+**Problem**: Changes not auto-refreshing
+**Solution**: 
+- Restart Live Server extension
+- Check port conflicts
+- Verify file extensions
+
+#### Git Integration Problems
+**Problem**: Git commands failing
+**Solution**: 
+- Verify Git installation
+- Check repository permissions
+- Reset Git configuration
+
+### Build Process Issues
+
+#### File Organization
+**Problem**: Difficult to maintain single HTML file
+**Solution**: 
+- Plan separation into multiple files
+- Use build tools for production
+- Maintain development structure
+
+## 🔍 Debugging Tips
+
+### Browser Developer Tools
+1. **Console**: Check for JavaScript errors
+2. **Network**: Monitor API requests
+3. **Elements**: Inspect CSS issues
+4. **Performance**: Identify bottlenecks
+
+### Common Debug Commands
+```javascript
+// Debug chart rendering
+console.log('Chart data:', chartData);
+
+// Debug responsive issues
+console.log('Window width:', window.innerWidth);
+
+// Debug event handlers
+element.addEventListener('click', (e) => {
+    console.log('Click event:', e);
+});
+```
+
+### Testing Checklist
+- [ ] Test on multiple browsers
+- [ ] Test on different screen sizes
+- [ ] Test with JavaScript disabled
+- [ ] Test with slow network
+- [ ] Test keyboard navigation
+- [ ] Test screen reader compatibility
+
+## 📊 Monitoring and Analytics
+
+### Error Tracking
+- Implement error logging
+- Monitor console errors
+- Track user feedback
+
+### Performance Monitoring
+- Page load times
+- JavaScript execution time
+- Memory usage patterns
+
+### User Analytics
+- Feature usage tracking
+- Navigation patterns
+- Error occurrence rates
+
+## 🚀 Future Improvements
+
+### Known Limitations
+1. **No real-time sync** - Currently simulated
+2. **No data persistence** - Data lost on refresh
+3. **Limited offline support** - Requires internet connection
+4. **No user authentication** - Single-user design
+
+### Planned Solutions
+1. **WebSocket integration** for real-time updates
+2. **LocalStorage/IndexedDB** for data persistence
+3. **Service Worker** for offline functionality
+4. **OAuth integration** for user management
+
+## 📞 Getting Help
+
+### When to Create an Issue
+- **Bug**: Reproducible error or unexpected behavior
+- **Feature**: New functionality request
+- **Question**: Clarification needed
+- **Documentation**: Improvement suggestions
+
+### Issue Template
+```markdown
+## Issue Type
+- [ ] Bug
+- [ ] Feature Request
+- [ ] Question
+- [ ] Documentation
+
+## Description
+Clear description of the issue or request.
+
+## Steps to Reproduce (for bugs)
+1. Step one
+2. Step two
+3. Expected vs actual result
+
+## Environment
+- Browser: [e.g., Chrome 91]
+- OS: [e.g., Windows 10]
+- Device: [e.g., Desktop]
+
+## Additional Context
+Any other relevant information.
+```
+
+---
+
+*This document is continuously updated as new issues are discovered and resolved. Last updated: January 2025*
