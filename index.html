@@ -1125,6 +1125,7 @@
             <div class="theme-icon-container">
                 <a href="#" class="theme-icon-link" data-page="themes">
                     <span class="theme-icon">🎨</span>
+                    <div class="theme-preview"></div>
                 </a>
             </div>
             <div class="profile-container">
@@ -1141,16 +1142,13 @@
                                 <stop offset="100%" style="stop-color:#228B22;stop-opacity:1" />
                             </linearGradient>
                         </defs>
-                        <!-- Mango body -->
                         <ellipse cx="50" cy="55" rx="25" ry="30" fill="url(#mangoGradient)" />
-                        <!-- Mango highlight -->
                         <ellipse cx="42" cy="45" rx="8" ry="12" fill="#FFD700" opacity="0.6" />
-                        <!-- Leaf -->
                         <path d="M50 25 Q45 15 55 20 Q60 25 50 35 Z" fill="url(#leafGradient)" />
-                        <!-- Leaf vein -->
                         <path d="M52 22 Q50 28 52 32" stroke="#228B22" stroke-width="1" fill="none" />
                     </svg>
                 </div>
+                <div class="profile-name">John Doe</div>
             </div>
         </div>
     </nav>
@@ -1158,65 +1156,102 @@
     <main class="main-content">
         <!-- Dashboard Page -->
         <div class="page active" id="dashboard">
-            <div class="page-header">
-                <h1 class="page-title">Dashboard</h1>
-                <p class="page-subtitle">Your command center overview</p>
-            </div>
-            
-            <div class="card-grid">
-                <div class="card stat-card">
-                    <div class="stat-number" id="totalTasks">24</div>
-                    <div class="stat-label">Active Tasks</div>
+            <div class="dashboard-header">
+                <div class="dashboard-title-section">
+                    <h1 class="page-title">Dashboard</h1>
+                    <p class="page-subtitle">Your command center overview</p>
                 </div>
-                <div class="card stat-card" style="background: var(--secondary-bg);">
-                    <div class="stat-number" id="completedGoals">7</div>
-                    <div class="stat-label">Goals Completed</div>
-                </div>
-                <div class="card stat-card" style="background: var(--success-bg);">
-                    <div class="stat-number" id="upcomingEvents">12</div>
-                    <div class="stat-label">Upcoming Events</div>
-                </div>
-            </div>
-
-            <div class="card-grid">
-                <div class="card">
-                    <h3>Analytics Overview</h3>
-                    <div class="graph-container">
-                        <canvas id="overlapChart" width="400" height="250"></canvas>
-                        <div class="graph-legend">
-                            <div class="legend-item">
-                                <span class="legend-color" style="background: rgba(102, 126, 234, 0.7);"></span>
-                                <span><a href="#" onclick="navigateToPage('financial')">Financial</a></span>
+                <div class="inspiration-section">
+                    <div class="inspirational-section">
+                        <div class="soothing-image">🌅</div>
+                        <div class="inspirational-quote" onclick="showQuoteRating()" onmouseover="showQuoteRating()">
+                            "The best time to plant a tree was 20 years ago. The second best time is now."
+                        </div>
+                        <div class="quote-rating-popup" id="quoteRatingPopup">
+                            <h4>Rate this quote</h4>
+                            <div class="rating-stars">
+                                <span onclick="rateQuote(1)">⭐</span>
+                                <span onclick="rateQuote(2)">⭐⭐</span>
+                                <span onclick="rateQuote(3)">⭐⭐⭐</span>
+                                <span onclick="rateQuote(4)">⭐⭐⭐⭐</span>
+                                <span onclick="rateQuote(5)">⭐⭐⭐⭐⭐</span>
                             </div>
-                            <div class="legend-item">
-                                <span class="legend-color" style="background: rgba(67, 233, 123, 0.7);"></span>
-                                <span><a href="#" onclick="navigateToPage('tracker')">Productivity</a></span>
-                            </div>
-                            <div class="legend-item">
-                                <span class="legend-color" style="background: rgba(250, 112, 154, 0.7);"></span>
-                                <span><a href="#" onclick="navigateToPage('tracker')">Wellness</a></span>
-                            </div>
-                            <div class="legend-item">
-                                <span class="legend-color" style="background: rgba(79, 172, 254, 0.7);"></span>
-                                <span><a href="#" onclick="navigateToPage('notebook')">Learning & Notes</a></span>
-                            </div>
-                            <div class="legend-item">
-                                <span class="legend-color" style="background: rgba(255, 193, 7, 0.7);"></span>
-                                <span><a href="#" onclick="navigateToPage('calendar')">Structure & Time</a></span>
-                            </div>
-                            <div class="legend-item">
-                                <span class="legend-color" style="background: rgba(156, 39, 176, 0.7);"></span>
-                                <span><a href="#" onclick="navigateToPage('resources')">Resources</a></span>
+                            <div class="tag-suggestions">
+                                <span class="tag" onclick="addTag('motivation')">motivation</span>
+                                <span class="tag" onclick="addTag('productivity')">productivity</span>
+                                <span class="tag" onclick="addTag('wisdom')">wisdom</span>
+                                <span class="tag" onclick="addTag('growth')">growth</span>
+                                <span class="tag" onclick="addTag('mindfulness')">mindfulness</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="card">
-                    <h3>Quick Actions</h3>
-                    <button class="btn btn-warning" onclick="quickLog()">📝 Quick Log</button>
-                    <button class="btn btn-primary" onclick="addTask()">+ Add Task</button>
-                    <button class="btn btn-secondary" onclick="updateTaskProject()">🔄 Update Task/Project</button>
-                    <button class="btn btn-success" onclick="syncAll()">🔄 Sync All Data</button>
+            </div>
+            
+            <div class="scroll-container">
+                <div class="card-grid">
+                    <div class="card stat-card">
+                        <div class="stat-number" id="totalTasks">24</div>
+                        <div class="stat-label">Active Tasks</div>
+                    </div>
+                    <div class="card stat-card" style="background: var(--secondary-bg);">
+                        <div class="stat-number" id="completedGoals">7</div>
+                        <div class="stat-label">Goals Completed</div>
+                    </div>
+                    <div class="card stat-card" style="background: var(--success-bg);">
+                        <div class="stat-number" id="upcomingEvents">12</div>
+                        <div class="stat-label">Upcoming Events</div>
+                    </div>
+                </div>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="analytics-header">
+                            <h3>Analytics Overview</h3>
+                            <select class="chart-type-selector" onchange="changeChartType(this.value)">
+                                <option value="wave">Wave Chart</option>
+                                <option value="bar">Bar Chart</option>
+                                <option value="pie">Pie Chart</option>
+                                <option value="line">Line Chart</option>
+                            </select>
+                        </div>
+                        <div class="graph-container">
+                            <canvas id="overlapChart" width="400" height="250"></canvas>
+                            <div class="graph-legend">
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background: rgba(102, 126, 234, 0.7);"></span>
+                                    <span><a href="#" onclick="navigateToPage('financial')">Financial</a></span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background: rgba(67, 233, 123, 0.7);"></span>
+                                    <span><a href="#" onclick="navigateToPage('tracker')">Productivity</a></span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background: rgba(250, 112, 154, 0.7);"></span>
+                                    <span><a href="#" onclick="navigateToPage('tracker')">Wellness</a></span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background: rgba(79, 172, 254, 0.7);"></span>
+                                    <span><a href="#" onclick="navigateToPage('notebook')">Learning & Notes</a></span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background: rgba(255, 193, 7, 0.7);"></span>
+                                    <span><a href="#" onclick="navigateToPage('calendar')">Structure & Time</a></span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background: rgba(156, 39, 176, 0.7);"></span>
+                                    <span><a href="#" onclick="navigateToPage('resources')">Resources</a></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Quick Actions</h3>
+                        <button class="btn btn-warning" onclick="quickLog()">📝 Quick Log</button>
+                        <button class="btn btn-primary" onclick="addTask()">+ Add Task</button>
+                        <button class="btn btn-secondary" onclick="updateTaskProject()">🔄 Update Task/Project</button>
+                        <button class="btn btn-success" onclick="syncAll()">🔄 Sync All Data</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1355,11 +1390,106 @@
             </div>
             
             <div class="card">
-                <div class="file-upload" onclick="document.getElementById('fileInput').click()">
+                <div class="file-upload" onclick="showFileUploadDialog()">
                     <h3>📁 Drop files here or click to upload</h3>
                     <p>Supports PDF, DOC, XLS, IMG files</p>
-                    <input type="file" id="fileInput" style="display: none;" multiple>
                 </div>
+                
+                <div class="uploaded-files" id="uploadedFilesList">
+                    <h4>Recent Files</h4>
+                    <div class="file-item">
+                        <span class="file-icon">📄</span>
+                        <span class="file-name">Budget_2025.xlsx</span>
+                        <span class="file-size">2.3 MB</span>
+                        <button class="btn-small btn-secondary">Open</button>
+                    </div>
+                    <div class="file-item">
+                        <span class="file-icon">📝</span>
+                        <span class="file-name">Meeting_Notes.docx</span>
+                        <span class="file-size">1.8 MB</span>
+                        <button class="btn-small btn-secondary">Open</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- File Upload Dialog -->
+        <div class="file-upload-popup" id="fileUploadPopup">
+            <h3>Upload File</h3>
+            <input type="file" id="fileInput" multiple>
+            <div class="input-group">
+                <label>Save Location</label>
+                <select class="form-input" id="saveLocation">
+                    <option value="documents">Documents</option>
+                    <option value="images">Images</option>
+                    <option value="spreadsheets">Spreadsheets</option>
+                    <option value="presentations">Presentations</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>
+                    <input type="checkbox" id="renameFileCheck" onchange="toggleRenameField()">
+                    Rename file
+                </label>
+            </div>
+            <div class="input-group" id="renameField" style="display: none;">
+                <label>New filename</label>
+                <input type="text" class="form-input" id="newFileName" placeholder="filename.ext">
+            </div>
+            <div class="file-upload-actions">
+                <button class="btn btn-primary" onclick="uploadFiles()">Upload</button>
+                <button class="btn btn-secondary" onclick="hideFileUploadDialog()">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Quick Log Dialog -->
+        <div class="file-upload-popup" id="quickLogPopup">
+            <h3>📝 Quick Log Entry</h3>
+            <div class="input-group">
+                <label>Log Type</label>
+                <select class="form-input" id="logType">
+                    <option value="task">Task</option>
+                    <option value="note">Note</option>
+                    <option value="expense">Expense</option>
+                    <option value="health">Health</option>
+                    <option value="general">General</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Log Content</label>
+                <textarea class="form-input" rows="3" id="logContent" placeholder="What happened?"></textarea>
+            </div>
+            <div class="input-group">
+                <label>Category</label>
+                <input type="text" class="form-input" id="logCategory" placeholder="e.g., work, personal, health">
+            </div>
+            <div class="input-group">
+                <label>Tags</label>
+                <input type="text" class="form-input" id="logTags" placeholder="comma, separated, tags">
+            </div>
+            <div class="input-group">
+                <label>
+                    <input type="checkbox" id="attachFile" onchange="toggleFileAttachment()">
+                    Attach File
+                </label>
+            </div>
+            <div class="input-group" id="fileAttachmentSection" style="display: none;">
+                <label>Choose File</label>
+                <input type="file" class="form-input" id="logFileInput" multiple>
+                <div class="file-attachment-options">
+                    <label>Save Location</label>
+                    <select class="form-input" id="logFileSaveLocation">
+                        <option value="logs">Logs Folder</option>
+                        <option value="documents">Documents</option>
+                        <option value="images">Images</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+            <div class="file-upload-actions">
+                <button class="btn btn-primary" onclick="saveQuickLog()">Save Log</button>
+                <button class="btn btn-secondary" onclick="hideQuickLogDialog()">Cancel</button>
             </div>
         </div>
 
@@ -1371,12 +1501,29 @@
             </div>
             
             <div class="card">
+                <h3>📝 Quotes</h3>
+                <div id="quotesLog">
+                    <div class="quote-entry">
+                        <span class="quote-rating">⭐⭐⭐⭐⭐</span>
+                        <span class="quote-text">"The best time to plant a tree was 20 years ago. The second best time is now."</span>
+                        <span class="quote-tags">motivation, growth</span>
+                    </div>
+                    <div class="quote-entry">
+                        <span class="quote-rating">⭐⭐⭐⭐</span>
+                        <span class="quote-text">"Success is not final, failure is not fatal: it is the courage to continue that counts."</span>
+                        <span class="quote-tags">productivity, wisdom</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="addCustomQuote()">+ Add Custom Quote</button>
+            </div>
+            
+            <div class="card">
                 <h3>System Logs</h3>
                 <div id="systemLogs">
-                    <p>[2025-07-02 19:32] ✅ App sync completed successfully</p>
-                    <p>[2025-07-02 19:30] 🔄 Financial data updated from Chase Bank</p>
-                    <p>[2025-07-02 19:28] 📝 New note added to notebook</p>
-                    <p>[2025-07-02 19:25] 📅 Calendar event created</p>
+                    <p>[2025-01-03 14:32] ✅ App sync completed successfully</p>
+                    <p>[2025-01-03 14:30] 🔄 Financial data updated from Chase Bank</p>
+                    <p>[2025-01-03 14:28] 📝 New note added to notebook</p>
+                    <p>[2025-01-03 14:25] 📅 Calendar event created</p>
                 </div>
             </div>
         </div>
@@ -1755,15 +1902,89 @@
             document.getElementById(pageId).classList.add('active');
         }
 
-        // Enhanced graph functionality
-        function createOverlapChart() {
+        // Enhanced functionality
+        let currentQuote = "The best time to plant a tree was 20 years ago. The second best time is now.";
+        let quoteRating = 0;
+        let quoteTags = [];
+        
+        function showQuoteRating() {
+            document.getElementById('quoteRatingPopup').classList.add('show');
+        }
+        
+        function hideQuoteRating() {
+            document.getElementById('quoteRatingPopup').classList.remove('show');
+        }
+        
+        function rateQuote(rating) {
+            quoteRating = rating;
+            saveQuoteToLogs();
+            hideQuoteRating();
+            generateNewQuote();
+        }
+        
+        function addTag(tag) {
+            if (!quoteTags.includes(tag)) {
+                quoteTags.push(tag);
+            }
+        }
+        
+        function saveQuoteToLogs() {
+            const quotesLog = document.getElementById('quotesLog');
+            const quoteEntry = document.createElement('div');
+            quoteEntry.className = 'quote-entry';
+            quoteEntry.innerHTML = `
+                <span class="quote-rating">${'⭐'.repeat(quoteRating)}</span>
+                <span class="quote-text">"${currentQuote}"</span>
+                <span class="quote-tags">${quoteTags.join(', ')}</span>
+            `;
+            quotesLog.insertBefore(quoteEntry, quotesLog.firstChild);
+            
+            // Reset for next quote
+            quoteTags = [];
+            quoteRating = 0;
+        }
+        
+        function generateNewQuote() {
+            const quotes = [
+                "The only way to do great work is to love what you do.",
+                "Innovation distinguishes between a leader and a follower.",
+                "Your time is limited, don't waste it living someone else's life.",
+                "The future belongs to those who believe in the beauty of their dreams.",
+                "Success is not final, failure is not fatal: it is the courage to continue that counts."
+            ];
+            
+            currentQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.querySelector('.inspirational-quote').textContent = `"${currentQuote}"`;
+        }
+        
+        function addCustomQuote() {
+            const quote = prompt('Enter your custom quote:');
+            if (quote) {
+                const quotesLog = document.getElementById('quotesLog');
+                const quoteEntry = document.createElement('div');
+                quoteEntry.className = 'quote-entry';
+                quoteEntry.innerHTML = `
+                    <span class="quote-rating">⭐⭐⭐⭐⭐</span>
+                    <span class="quote-text">"${quote}"</span>
+                    <span class="quote-tags">custom</span>
+                `;
+                quotesLog.insertBefore(quoteEntry, quotesLog.firstChild);
+                simulateSync();
+            }
+        }
+        
+        function changeChartType(type) {
+            // This would update the chart visualization
+            console.log('Changing chart type to:', type);
+            createOverlapChart(type);
+        }
+        
+        function createOverlapChart(type = 'wave') {
             const canvas = document.getElementById('overlapChart');
             const ctx = canvas.getContext('2d');
             
-            // Clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Create gradient fills
             const gradients = {
                 financial: createGradient(ctx, 'rgba(102, 126, 234, 0.7)', 'rgba(102, 126, 234, 0.3)'),
                 health: createGradient(ctx, 'rgba(67, 233, 123, 0.7)', 'rgba(67, 233, 123, 0.3)'),
@@ -1771,11 +1992,156 @@
                 learning: createGradient(ctx, 'rgba(79, 172, 254, 0.7)', 'rgba(79, 172, 254, 0.3)')
             };
             
-            // Draw overlapping areas
-            drawArea(ctx, gradients.financial, generateWaveData(0));
-            drawArea(ctx, gradients.health, generateWaveData(50));
-            drawArea(ctx, gradients.productivity, generateWaveData(100));
-            drawArea(ctx, gradients.learning, generateWaveData(150));
+            if (type === 'wave') {
+                drawArea(ctx, gradients.financial, generateWaveData(0));
+                drawArea(ctx, gradients.health, generateWaveData(50));
+                drawArea(ctx, gradients.productivity, generateWaveData(100));
+                drawArea(ctx, gradients.learning, generateWaveData(150));
+            } else if (type === 'bar') {
+                drawBarChart(ctx, gradients);
+            } else if (type === 'pie') {
+                drawPieChart(ctx, gradients);
+            } else if (type === 'line') {
+                drawLineChart(ctx, gradients);
+            }
+        }
+        
+        function drawBarChart(ctx, gradients) {
+            const data = [75, 60, 80, 65];
+            const colors = [gradients.financial, gradients.health, gradients.productivity, gradients.learning];
+            const barWidth = 80;
+            const spacing = 20;
+            
+            data.forEach((value, index) => {
+                const x = index * (barWidth + spacing) + 50;
+                const height = (value / 100) * 200;
+                const y = 250 - height;
+                
+                ctx.fillStyle = colors[index];
+                ctx.fillRect(x, y, barWidth, height);
+            });
+        }
+        
+        function drawPieChart(ctx, gradients) {
+            const data = [30, 25, 25, 20];
+            const colors = [gradients.financial, gradients.health, gradients.productivity, gradients.learning];
+            const centerX = 200;
+            const centerY = 125;
+            const radius = 80;
+            
+            let startAngle = 0;
+            data.forEach((value, index) => {
+                const sliceAngle = (value / 100) * 2 * Math.PI;
+                
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
+                ctx.fillStyle = colors[index];
+                ctx.fill();
+                
+                startAngle += sliceAngle;
+            });
+        }
+        
+        function drawLineChart(ctx, gradients) {
+            const data = [
+                [20, 40, 60, 80, 100],
+                [30, 50, 45, 70, 90],
+                [25, 35, 55, 75, 85],
+                [15, 45, 65, 85, 95]
+            ];
+            const colors = [gradients.financial, gradients.health, gradients.productivity, gradients.learning];
+            
+            data.forEach((lineData, index) => {
+                ctx.beginPath();
+                ctx.strokeStyle = colors[index];
+                ctx.lineWidth = 3;
+                
+                lineData.forEach((value, pointIndex) => {
+                    const x = pointIndex * 80 + 50;
+                    const y = 250 - (value / 100) * 200;
+                    
+                    if (pointIndex === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                });
+                
+                ctx.stroke();
+            });
+        }
+        
+        function showFileUploadDialog() {
+            document.getElementById('fileUploadPopup').classList.add('show');
+        }
+        
+        function hideFileUploadDialog() {
+            document.getElementById('fileUploadPopup').classList.remove('show');
+        }
+        
+        function toggleRenameField() {
+            const checkbox = document.getElementById('renameFileCheck');
+            const renameField = document.getElementById('renameField');
+            const fileInput = document.getElementById('fileInput');
+            
+            if (checkbox.checked) {
+                renameField.style.display = 'block';
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    const extension = file.name.split('.').pop();
+                    document.getElementById('newFileName').value = `new_file.${extension}`;
+                }
+            } else {
+                renameField.style.display = 'none';
+            }
+        }
+        
+        function uploadFiles() {
+            const fileInput = document.getElementById('fileInput');
+            const saveLocation = document.getElementById('saveLocation').value;
+            const renameCheck = document.getElementById('renameFileCheck').checked;
+            const newFileName = document.getElementById('newFileName').value;
+            
+            if (fileInput.files.length === 0) {
+                alert('Please select a file to upload.');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const finalName = renameCheck ? newFileName : file.name;
+            
+            alert(`File "${finalName}" uploaded to ${saveLocation} folder successfully!`);
+            hideFileUploadDialog();
+            simulateSync();
+        }
+        
+        function setFont(fontType) {
+            document.querySelectorAll('.font-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            
+            event.target.classList.add('active');
+            
+            const body = document.body;
+            body.className = body.className.replace(/font-\w+/g, '');
+            body.classList.add(`font-${fontType}`);
+        }
+        
+        function updateCustomColor(type, color) {
+            document.documentElement.style.setProperty(`--${type}-color`, color);
+        }
+        
+        function updateTextSize(size) {
+            document.documentElement.style.setProperty('--base-font-size', size + 'px');
+        }
+        
+        function updateLineHeight(height) {
+            document.documentElement.style.setProperty('--line-height', height);
+        }
+        
+        function toggleHighContrast(enabled) {
+            document.body.classList.toggle('high-contrast', enabled);
         }
 
         function createGradient(ctx, start, end) {
@@ -1810,17 +2176,59 @@
 
         // Quick Log functionality
         function quickLog() {
-            const logType = prompt('Log type (task/note/expense/health):') || 'general';
-            const logContent = prompt('Enter your log:');
-            if (logContent) {
-                const timestamp = new Date().toISOString();
-                const logEntry = `${timestamp.split('T')[0]}-${logType}-none-${logContent}-general-quicklog`;
-                
-                // Add to logs page
-                addLogEntry(logEntry);
-                alert('Log saved successfully!');
-                simulateSync();
+            document.getElementById('quickLogPopup').classList.add('show');
+        }
+
+        function hideQuickLogDialog() {
+            document.getElementById('quickLogPopup').classList.remove('show');
+        }
+
+        function toggleFileAttachment() {
+            const checkbox = document.getElementById('attachFile');
+            const fileSection = document.getElementById('fileAttachmentSection');
+            
+            if (checkbox.checked) {
+                fileSection.style.display = 'block';
+            } else {
+                fileSection.style.display = 'none';
             }
+        }
+
+        function saveQuickLog() {
+            const logType = document.getElementById('logType').value;
+            const logContent = document.getElementById('logContent').value;
+            const logCategory = document.getElementById('logCategory').value || 'general';
+            const logTags = document.getElementById('logTags').value || 'quicklog';
+            const attachFile = document.getElementById('attachFile').checked;
+            const fileInput = document.getElementById('logFileInput');
+            
+            if (!logContent) {
+                alert('Please enter log content.');
+                return;
+            }
+            
+            const timestamp = new Date().toISOString().split('T')[0];
+            let files = 'none';
+            
+            if (attachFile && fileInput.files.length > 0) {
+                files = Array.from(fileInput.files).map(f => f.name).join(', ');
+            }
+            
+            const logEntry = `${timestamp}-${logType}-${files}-${logContent}-${logCategory}-${logTags}`;
+            
+            // Add to logs page
+            addLogEntry(logEntry);
+            
+            // Clear form
+            document.getElementById('logContent').value = '';
+            document.getElementById('logCategory').value = '';
+            document.getElementById('logTags').value = '';
+            document.getElementById('attachFile').checked = false;
+            document.getElementById('fileAttachmentSection').style.display = 'none';
+            
+            hideQuickLogDialog();
+            alert('Log saved successfully!');
+            simulateSync();
         }
 
         function addLogEntry(entry) {
