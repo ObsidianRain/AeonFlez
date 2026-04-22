@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rebirth - Farm & Rebuild</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-surface: #1a1a1a;
+            --bg-elevated: #2a2a2a;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --text-muted: #606060;
+            --accent-green: #4CAF50;
+            --accent-danger: #ff4444;
+            --accent-warning: #ffaa00;
+            --accent-info: #00aaff;
+            --border: #333;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 1rem;
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border);
+            padding: 0.75rem 1rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--accent-green);
+            letter-spacing: 2px;
+        }
+
+        .nav-links a {
+            padding: 0.5rem 1rem;
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover {
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            border-color: var(--accent-green);
+        }
+
+        .nav-links a.active {
+            background: var(--accent-green);
+            color: var(--bg-dark);
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 80px auto 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: var(--accent-green);
+            letter-spacing: 4px;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-green);
+        }
+
+        .scene {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            min-height: 300px;
+        }
+
+        .scene p {
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .choices {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .prompt {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--accent-green);
+            font-weight: bold;
+        }
+
+        .choice-btn {
+            width: 100%;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.2s;
+            text-align: left;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+        }
+
+        .choice-btn:hover {
+            background: var(--bg-dark);
+            border-color: var(--accent-green);
+            transform: translateX(4px);
+        }
+
+        .choice-num {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: var(--accent-green);
+            color: var(--bg-dark);
+            border-radius: 50%;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .choice-btn.dark {
+            border-color: var(--accent-danger);
+        }
+
+        .choice-btn.dark:hover {
+            background: rgba(255, 68, 68, 0.1);
+        }
+
+        .choice-btn.dark .choice-num {
+            background: var(--accent-danger);
+        }
+
+        .unique {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .custom-input {
+            width: 100%;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .unique-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-info), var(--accent-green));
+            border: none;
+            color: var(--bg-dark);
+            padding: 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .unique-btn:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-title">REBIRTH</div>
+        <div class="nav-links">
+            <a href="../index.html">Manager</a>
+            <a href="index.html" class="active">Apocalyptic</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>REBIRTH</h1>
+            <div class="subtitle">Henderson, Nevada 89118 // Day 1</div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-label">Day</div>
+                <div class="stat-value" id="day">1</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Health</div>
+                <div class="stat-value" id="health">100%</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Food</div>
+                <div class="stat-value" id="food">3</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Water</div>
+                <div class="stat-value" id="water">2L</div>
+            </div>
+        </div>
+
+        <div class="scene" id="scene">
+            <p>You wake on your apartment floor, head pounding. Silence presses against the windows where Vegas traffic should roar. The power's dead. Your phone won't turn on. Dust coats everything like it's been weeks.</p>
+            
+            <p>Through the window, Henderson looks abandoned. No cars. No people. Just stillness.</p>
+            
+            <p>Your small studio apartment: kitchenette, bed, bathroom. You're hungry thirsty tired. The digital clock is blank. Outside, harsh Nevada sun filters through haze.</p>
+            
+            <p>You have no idea what happened. But you're alive. And you're alone.</p>
+        </div>
+
+        <div class="choices">
+            <div class="prompt">What do you do?</div>
+            
+            <button class="choice-btn" onclick="choose(1)">
+                <span class="choice-num">1</span>
+                <span>Check the window - assess what's outside</span>
+            </button>
+
+            <button class="choice-btn" onclick="choose(2)">
+                <span class="choice-num">2</span>
+                <span>Search the kitchenette for food and water</span>
+            </button>
+
+            <button class="choice-btn" onclick="choose(3)">
+                <span class="choice-num">3</span>
+                <span>Try the door - check the hallway</span>
+            </button>
+
+            <button class="choice-btn" onclick="choose(4)">
+                <span class="choice-num">4</span>
+                <span>Look for anything useful - supplies, tools, weapons</span>
+            </button>
+
+            <button class="choice-btn dark" onclick="choose(5)">
+                <span class="choice-num">5</span>
+                <span>💀 Assume this is a really bad hangover and go back to sleep</span>
+            </button>
+
+            <div class="unique">
+                <input type="text" id="custom" class="custom-input" placeholder="Type your own action...">
+                <button class="unique-btn" onclick="customAction()">🎲 UNIQUE ACTION</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let gameState = {
+            day: 1,
+            health: 100,
+            food: 3,
+            water: 2,
+            location: 'apartment',
+            inventory: []
+        };
+
+        function choose(num) {
+            console.log(`Choice ${num}`);
+            // Placeholder for game logic
+            alert(`You chose option ${num}. Game mechanics coming soon!`);
+        }
+
+        function customAction() {
+            const input = document.getElementById('custom').value;
+            if (input.trim()) {
+                console.log(`Custom: ${input}`);
+                alert(`Custom action: ${input}\nGame mechanics coming soon!`);
+                document.getElementById('custom').value = '';
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('day').textContent = gameState.day;
+            document.getElementById('health').textContent = gameState.health + '%';
+            document.getElementById('food').textContent = gameState.food;
+            document.getElementById('water').textContent = gameState.water + 'L';
+        }
+    </script>
+</body>
+</html>
