@@ -416,3 +416,7 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Supabase .env
+VITE_SUPABASE_URL=https://cqmhriegvwgcvbikrwzz.supabase.co
+VITE_SUPABASE_ANON_KEY=sb_publishable_wqGNsVn9guWABa9TswMMIA_TzK5ajxe
