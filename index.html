@@ -130,6 +130,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <title>AeonFlez - Your Personal Command Center</title>
     <style>
         * {
@@ -1741,28 +1746,28 @@
                 <div class="card">
                     <h3>🏦 Financial Services</h3>
                     <ul>
-                        <li><a href="#" target="_blank">Chase Online Banking</a></li>
-                        <li><a href="#" target="_blank">Credit Karma</a></li>
-                        <li><a href="#" target="_blank">Mint</a></li>
-                        <li><a href="#" target="_blank">Personal Capital</a></li>
+                        <li><a href="#" target="_blank" rel="noopener noreferrer">Chase Online Banking</a></li>
+                        <li><a href="#" target="_blank" rel="noopener noreferrer">Credit Karma</a></li>
+                        <li><a href="#" target="_blank" rel="noopener noreferrer">Mint</a></li>
+                        <li><a href="#" target="_blank" rel="noopener noreferrer">Personal Capital</a></li>
                     </ul>
                 </div>
                 <div class="card">
                     <h3>📱 Productivity Apps</h3>
                     <ul>
-                        <li><a href="#" target="_blank">Todoist</a></li>
-                        <li><a href="#" target="_blank">Notion</a></li>
-                        <li><a href="#" target="_blank">Google Calendar</a></li>
-                        <li><a href="#" target="_blank">Evernote</a></li>
+                        <li><a href="#" target="_blank" rel="noopener noreferrer">Todoist</a></li>
+                        <li><a href="#" target="_blank" rel="noopener noreferrer">Notion</a></li>
+                        <li><a href="#" target="_blank" rel="noopener noreferrer">Google Calendar</a></li>
+                        <li><a href="#" target="_blank" rel="noopener noreferrer">Evernote</a></li>
                     </ul>
                 </div>
                 <div class="card">
                     <h3>🎯 Goal Tracking</h3>
                     <ul>
-                        <li><a href="#" target="_blank">Habitica</a></li>
-                        <li><a href="#" target="_blank">Strava</a></li>
-                        <li><a href="#" target="_blank">MyFitnessPal</a></li>
-                        <li><a href="#" target="_blank">Goodreads</a></li>
+                        <li><a href="#" target="_blank" rel="noopener noreferrer">Habitica</a></li>
+                        <li><a href="#" target="_blank" rel="noopener noreferrer">Strava</a></li>
+                        <li><a href="#" target="_blank" rel="noopener noreferrer">MyFitnessPal</a></li>
+                        <li><a href="#" target="_blank" rel="noopener noreferrer">Goodreads</a></li>
                     </ul>
                 </div>
             </div>
@@ -1932,11 +1937,19 @@
             const quotesLog = document.getElementById('quotesLog');
             const quoteEntry = document.createElement('div');
             quoteEntry.className = 'quote-entry';
-            quoteEntry.innerHTML = `
-                <span class="quote-rating">${'⭐'.repeat(quoteRating)}</span>
-                <span class="quote-text">"${currentQuote}"</span>
-                <span class="quote-tags">${quoteTags.join(', ')}</span>
-            `;
+            // Safe DOM manipulation - using textContent instead of innerHTML to prevent XSS
+            const ratingSpan = document.createElement('span');
+            ratingSpan.className = 'quote-rating';
+            ratingSpan.textContent = '⭐'.repeat(quoteRating);
+            const textSpan = document.createElement('span');
+            textSpan.className = 'quote-text';
+            textSpan.textContent = `"${currentQuote}"`;
+            const tagsSpan = document.createElement('span');
+            tagsSpan.className = 'quote-tags';
+            tagsSpan.textContent = quoteTags.join(', ');
+            quoteEntry.appendChild(ratingSpan);
+            quoteEntry.appendChild(textSpan);
+            quoteEntry.appendChild(tagsSpan);
             quotesLog.insertBefore(quoteEntry, quotesLog.firstChild);
             
             // Reset for next quote
@@ -1963,11 +1976,19 @@
                 const quotesLog = document.getElementById('quotesLog');
                 const quoteEntry = document.createElement('div');
                 quoteEntry.className = 'quote-entry';
-                quoteEntry.innerHTML = `
-                    <span class="quote-rating">⭐⭐⭐⭐⭐</span>
-                    <span class="quote-text">"${quote}"</span>
-                    <span class="quote-tags">custom</span>
-                `;
+                // Safe DOM manipulation - using textContent instead of innerHTML to prevent XSS
+                const ratingSpan = document.createElement('span');
+                ratingSpan.className = 'quote-rating';
+                ratingSpan.textContent = '⭐⭐⭐⭐⭐';
+                const textSpan = document.createElement('span');
+                textSpan.className = 'quote-text';
+                textSpan.textContent = `"${quote}"`;
+                const tagsSpan = document.createElement('span');
+                tagsSpan.className = 'quote-tags';
+                tagsSpan.textContent = 'custom';
+                quoteEntry.appendChild(ratingSpan);
+                quoteEntry.appendChild(textSpan);
+                quoteEntry.appendChild(tagsSpan);
                 quotesLog.insertBefore(quoteEntry, quotesLog.firstChild);
                 simulateSync();
             }
