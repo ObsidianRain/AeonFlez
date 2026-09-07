@@ -1,8 +1,11 @@
+import GoogleSignIn from "../components/GoogleSignIn";
+
 export default function Home() {
   return (
     <main style={{ padding: '2rem', fontFamily: 'system-ui, sans-serif' }}>
       <h1>Welcome to AeonFlez</h1>
-      <p>Your Next.js application is running successfully.</p>
+      <p>Sign in with Google to create or access your AeonFlez account.</p>
+      <GoogleSignIn />
       <div style={{ marginTop: '2rem' }}>
         <h2>Getting Started</h2>
         <ul>
