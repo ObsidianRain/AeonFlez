@@ -1,0 +1,1 @@
+Nothing should be output as the added file is only `.gitignore` itself and no other files that need to be ignored.
