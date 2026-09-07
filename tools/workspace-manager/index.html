@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌑 Workspace Manager</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap');
+
+:root {
+  --bg: #0d0f14;
+  --surface: #151820;
+  --surface2: #1c2030;
+  --border: #2a2f45;
+  --accent: #7c6af7;
+  --accent2: #f7a26a;
+  --accent3: #5fe0b0;
+  --danger: #f76a6a;
+  --warn: #f7d26a;
+  --text: #e8eaf0;
+  --muted: #7a80a0;
+  --tag-note: #f76a6a22;
+  --tag-note-b: #f76a6a;
+  --tag-nb: #7c6af722;
+  --tag-nb-b: #7c6af7;
+  --tag-vault: #f7a26a22;
+  --tag-vault-b: #f7a26a;
+  --tag-db: #5fe0b022;
+  --tag-db-b: #5fe0b0;
+  --tag-tmpl: #f7d26a22;
+  --tag-tmpl-b: #f7d26a;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  min-height: 100vh;
+  padding: 16px;
+}
+
+/* ── HEADER ── */
+.header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.header-left h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: -0.5px; }
+.header-left .subtitle { color: var(--muted); font-size: 10px; margin-top: 2px; }
+.header-right { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+/* ── STATS ── */
+.stats-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.stat { background: var(--surface); border: 1px solid var(--border); border-radius: 7px; padding: 6px 12px; display: flex; flex-direction: column; gap: 1px; }
+.stat-val { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 17px; }
+.stat-label { color: var(--muted); font-size: 9px; }
+.stat.accent .stat-val { color: var(--accent); }
+.stat.accent2 .stat-val { color: var(--accent2); }
+.stat.accent3 .stat-val { color: var(--accent3); }
+.stat.warn .stat-val { color: var(--warn); }
+
+/* ── DUP WARNING ── */
+.dup-warning { background: #f76a6a08; border: 1px solid #f76a6a33; border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; }
+.dup-warning h4 { font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; color: var(--danger); margin-bottom: 6px; }
+.dup-warning details summary { cursor: pointer; color: var(--muted); font-size: 10px; user-select: none; }
+.dup-warning details summary:hover { color: var(--danger); }
+.dup-item { font-size: 10px; color: var(--muted); padding: 3px 0; border-bottom: 1px solid #ffffff08; }
+.dup-item:last-child { border-bottom: none; }
+.dup-name { color: var(--danger); font-weight: 700; }
+
+/* ── CONTROLS ── */
+.controls { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; align-items: center; }
+.filter-btn { background: var(--surface); border: 1px solid var(--border); color: var(--muted); border-radius: 5px; padding: 4px 10px; font-family: 'Space Mono', monospace; font-size: 10px; cursor: pointer; transition: all 0.15s; }
+.filter-btn:hover, .filter-btn.active { border-color: var(--accent); color: var(--accent); background: var(--tag-nb); }
+.search-box { background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 5px; padding: 4px 10px; font-family: 'Space Mono', monospace; font-size: 10px; width: 160px; outline: none; transition: border-color 0.15s; }
+.search-box:focus { border-color: var(--accent); }
+
+/* ── TABLE ── */
+.table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 9px; overflow: auto; margin-bottom: 14px; max-height: 400px; }
+table { width: 100%; border-collapse: collapse; min-width: 700px; }
+thead { background: var(--surface2); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 2; }
+th { padding: 8px 10px; text-align: left; color: var(--muted); font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+tr:last-child { border-bottom: none; }
+tr:hover { background: var(--surface2); }
+td { padding: 7px 10px; vertical-align: middle; }
+.sel-col { width: 28px; }
+input[type=checkbox] { accent-color: var(--accent); cursor: pointer; width: 13px; height: 13px; }
+.page-title { font-weight: 700; font-size: 11px; color: var(--text); white-space: nowrap; max-width: 160px; overflow: hidden; text-overflow: ellipsis; display: inline-block; vertical-align: middle; }
+.page-emoji { font-size: 13px; margin-right: 4px; }
+.tag { display: inline-block; border-radius: 3px; padding: 1px 6px; font-size: 9px; font-weight: 700; white-space: nowrap; }
+.tag-note { background: var(--tag-note); color: var(--tag-note-b); border: 1px solid var(--tag-note-b); }
+.tag-notebook { background: var(--tag-nb); color: var(--tag-nb-b); border: 1px solid var(--tag-nb-b); }
+.tag-vault { background: var(--tag-vault); color: var(--tag-vault-b); border: 1px solid var(--tag-vault-b); }
+.tag-database { background: var(--tag-db); color: var(--tag-db-b); border: 1px solid var(--tag-db-b); }
+.tag-template { background: var(--tag-tmpl); color: var(--tag-tmpl-b); border: 1px solid var(--tag-tmpl-b); }
+.badge { display: inline-block; border-radius: 3px; padding: 1px 5px; font-size: 9px; font-weight: 700; white-space: nowrap; }
+.badge-yes { background: #5fe0b015; color: var(--accent3); }
+.badge-no { background: #f76a6a11; color: var(--danger); }
+.date-cell { color: var(--muted); font-size: 10px; white-space: nowrap; }
+.suggestion-pill { background: var(--surface2); border: 1px dashed var(--border); border-radius: 3px; padding: 1px 6px; font-size: 9px; color: var(--muted); max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; }
+.suggestion-pill.urgent { border-color: var(--accent2); color: var(--accent2); background: #f7a26a0a; }
+.notion-link { color: var(--muted); text-decoration: none; font-size: 9px; border: 1px solid var(--border); border-radius: 3px; padding: 1px 6px; transition: all 0.15s; white-space: nowrap; }
+.notion-link:hover { color: var(--accent); border-color: var(--accent); background: var(--tag-nb); }
+.section-header { background: #7c6af710; border-left: 3px solid var(--accent); padding: 5px 10px; font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700; color: var(--accent); letter-spacing: 0.05em; }
+
+/* ── ACTION PANEL ── */
+.action-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 9px; padding: 12px 14px; }
+.action-panel-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.selected-list { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; min-height: 24px; align-items: center; }
+.selected-chip { background: var(--tag-nb); border: 1px solid var(--accent); color: var(--accent); border-radius: 3px; padding: 2px 7px; font-size: 10px; display: flex; align-items: center; gap: 3px; }
+.selected-chip .rm { cursor: pointer; color: var(--muted); font-size: 11px; line-height: 1; }
+.selected-chip .rm:hover { color: var(--danger); }
+.action-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; }
+.action-group { display: flex; flex-direction: column; gap: 4px; }
+.action-label { font-size: 9px; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; }
+.quick-actions { display: flex; flex-wrap: wrap; gap: 5px; }
+
+textarea.instruction { background: var(--surface2); border: 1px solid var(--border); color: var(--text); border-radius: 6px; padding: 8px 10px; font-family: 'Space Mono', monospace; font-size: 10px; resize: vertical; outline: none; width: 280px; min-height: 70px; transition: border-color 0.15s; }
+textarea.instruction:focus { border-color: var(--accent); }
+textarea.instruction::placeholder { color: var(--muted); }
+
+/* ── BUTTONS ── */
+.btn { border: none; border-radius: 6px; padding: 7px 14px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 11px; cursor: pointer; transition: all 0.15s; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { opacity: 0.85; }
+.btn-claude { background: linear-gradient(135deg, #c96442 0%, #b85a3d 100%); color: #fff; font-size: 12px; padding: 9px 18px; box-shadow: 0 2px 12px #c9644240; }
+.btn-claude:hover { box-shadow: 0 4px 18px #c9644260; transform: translateY(-1px); }
+.btn-claude:active { transform: translateY(0); }
+.btn-secondary { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); }
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+.btn-small { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); border-radius: 4px; padding: 3px 8px; font-family: 'Space Mono', monospace; font-size: 10px; cursor: pointer; transition: all 0.12s; white-space: nowrap; }
+.btn-small:hover { border-color: var(--accent); color: var(--accent); background: var(--tag-nb); }
+.btn-small.active-qa { border-color: var(--accent2); color: var(--accent2); background: #f7a26a0f; }
+
+/* ── SUBMIT ROW ── */
+.submit-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+.submit-hint { font-size: 10px; color: var(--muted); flex: 1; min-width: 160px; }
+.submit-hint strong { color: var(--accent3); }
+
+/* ── TOAST ── */
+.toast { position: fixed; bottom: 20px; right: 20px; background: var(--surface2); border: 1px solid var(--accent); border-radius: 8px; padding: 10px 16px; font-size: 11px; color: var(--accent3); display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 20px #0008; opacity: 0; transform: translateY(10px); transition: all 0.25s; pointer-events: none; z-index: 999; max-width: 300px; }
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.error { border-color: var(--danger); color: var(--danger); }
+
+/* ── NOTION EMBED NOTICE ── */
+.embed-notice { background: #5fe0b00a; border: 1px solid #5fe0b033; border-radius: 7px; padding: 8px 12px; margin-bottom: 12px; font-size: 10px; color: var(--accent3); display: flex; align-items: flex-start; gap: 8px; }
+.embed-notice .icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.embed-notice a { color: var(--accent3); }
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="embed-notice">
+  <span class="icon">ℹ️</span>
+  <span>Embedded in Notion · Select pages, choose an action, then hit <strong>Open in Claude →</strong> to launch a pre-filled new chat. No copy-paste needed.</span>
+</div>
+
+<div class="header">
+  <div class="header-left">
+    <h1>🌑 Notion Workspace Manager</h1>
+    <div class="subtitle">Rain's workspace · Mar 2026 · 62 pages indexed</div>
+  </div>
+  <div class="header-right">
+    <button class="btn btn-secondary" onclick="selectAll()">Select All</button>
+    <button class="btn btn-secondary" onclick="clearAll()">Clear</button>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat accent"><span class="stat-val" id="total-count">62</span><span class="stat-label">Total Pages</span></div>
+  <div class="stat accent2"><span class="stat-val">62</span><span class="stat-label">Accessible</span></div>
+  <div class="stat accent3"><span class="stat-val">~18</span><span class="stat-label">Offline</span></div>
+  <div class="stat warn"><span class="stat-val" id="dup-count">8</span><span class="stat-label">Duplicates</span></div>
+  <div class="stat"><span class="stat-val" id="sel-count">0</span><span class="stat-label">Selected</span></div>
+</div>
+
+<div class="dup-warning">
+  <h4>⚠ Duplicate / Redundant Clusters Detected</h4>
+  <details>
+    <summary>Show clusters ▸</summary>
+    <div style="margin-top:6px">
+      <div class="dup-item"><span class="dup-name">Wholesaling Pipeline</span> vs <span class="dup-name">Wholesaling Pipline Template</span> — same content, typo in template name</div>
+      <div class="dup-item"><span class="dup-name">Wholesaling Action Gameplan</span> ×2 — now resolved: Q1 active + [TEMPLATE] copy</div>
+      <div class="dup-item"><span class="dup-name">Stock Inventory & Purchase Research</span> ×2 — resolved: A moved to RESOURCE VAULT, B marked for deletion</div>
+      <div class="dup-item"><span class="dup-name">README_START_HERE</span> ×2 — resolved: keeper moved under Hardware Roadmap, duplicate marked for deletion</div>
+      <div class="dup-item"><span class="dup-name">A Savings Dashboard</span> ×2 — resolved: A is live, B renamed to [TEMPLATE]</div>
+      <div class="dup-item"><span class="dup-name">My notes</span> ×3 databases — three separate "My notes" databases, unresolved</div>
+      <div class="dup-item"><span class="dup-name">REI</span> vs <span class="dup-name">REI - Learning Hub Template</span> vs <span class="dup-name">Wholesaling HQ</span> — overlapping, unresolved</div>
+      <div class="dup-item"><span class="dup-name">Home</span> ×2 — "HOME" top page + a separate "Home" page, unresolved</div>
+    </div>
+  </details>
+</div>
+
+<div class="controls">
+  <input class="search-box" type="text" placeholder="Search pages..." id="search-input" oninput="filterTable()">
+  <button class="filter-btn active" onclick="filterType('all',this)">All</button>
+  <button class="filter-btn" onclick="filterType('note',this)">📄 Notes</button>
+  <button class="filter-btn" onclick="filterType('notebook',this)">📓 Notebooks</button>
+  <button class="filter-btn" onclick="filterType('vault',this)">🗄 Vault</button>
+  <button class="filter-btn" onclick="filterType('database',this)">🗃 Databases</button>
+  <button class="filter-btn" onclick="filterType('template',this)">📋 Templates</button>
+  <button class="filter-btn" onclick="filterType('dup',this)">⚠ Dupes</button>
+</div>
+
+<div class="table-wrap">
+  <table id="main-table">
+    <thead>
+      <tr>
+        <th class="sel-col"><input type="checkbox" id="select-all-cb" onchange="toggleAll(this)"></th>
+        <th>Page Title</th>
+        <th>Type</th>
+        <th>Section</th>
+        <th>Offline</th>
+        <th>Last Edited</th>
+        <th>Suggestion</th>
+        <th>Open</th>
+      </tr>
+    </thead>
+    <tbody id="table-body"></tbody>
+  </table>
+</div>
+
+<!-- ACTION PANEL -->
+<div class="action-panel">
+  <div class="action-panel-title">⬡ Submit to Claude</div>
+
+  <div class="selected-list" id="selected-list">
+    <span style="color:var(--muted);font-size:10px">No pages selected — check rows above</span>
+  </div>
+
+  <div class="action-row">
+    <div class="action-group">
+      <span class="action-label">Quick Actions</span>
+      <div class="quick-actions" id="qa-buttons">
+        <button class="btn-small" onclick="setQA(this,'Generate a quick-access dashboard page as the new top page for this notebook')">📊 Gen Dashboard</button>
+        <button class="btn-small" onclick="setQA(this,'Move these pages under a single parent to reduce top-level clutter')">📁 Group / Move</button>
+        <button class="btn-small" onclick="setQA(this,'Review these pages for duplicates and recommend which to archive')">⚠ Check Dupes</button>
+        <button class="btn-small" onclick="deepDupReview(this)">🔬 Deep Dup Review</button>
+        <button class="btn-small" onclick="setQA(this,'Rename these pages to add a [TEMPLATE] prefix and move them to the Templates section')">📋 Mark as Template</button>
+        <button class="btn-small" onclick="setQA(this,'Archive these pages — move to an ARCHIVE section, they are no longer active')">🗄 Archive</button>
+        <button class="btn-small" onclick="setQA(this,'Suggest a better name for this page based on its content and parent context')">✏️ Suggest Rename</button>
+        <button class="btn-small" onclick="setQA(this,'Review these pages for content differences: check if one is a template, one is active, and recommend merge, move, archive, or delete for each')">🧬 Diff &amp; Classify</button>
+      </div>
+    </div>
+
+    <div class="action-group" style="flex:1">
+      <span class="action-label">Instruction</span>
+      <textarea class="instruction" id="instruction-box" placeholder="Type your instruction here — or pick a Quick Action above&#10;&#10;e.g. Move all these pages under Wholesaling HQ&#10;e.g. Generate a dashboard for this notebook&#10;e.g. Identify which of these are true duplicates and recommend merge/archive/delete"></textarea>
+    </div>
+  </div>
+
+  <div class="submit-row">
+    <div class="submit-hint">
+      <strong>How it works:</strong> Select pages → write or pick an instruction → click Open in Claude. A new chat opens with your full request pre-loaded. No copy-paste.
+    </div>
+    <button class="btn btn-secondary" onclick="copyPrompt()" title="Copy prompt to clipboard instead">📋 Copy</button>
+    <button class="btn btn-claude" onclick="openInClaude()">Open in Claude →</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const pages = [
+  // CORE NAVIGATION
+  { id:'2e53d54361c1807d95bcd1a391f526d7', title:'HOME', emoji:'🏠', type:'notebook', section:'Core Navigation', offline:true, date:'Mar 18', suggestion:'Primary hub. Link to all notebooks.', dup:false },
+  { id:'2e73d54361c1807081d4f57ac7d91761', title:'MASTER LIFE DATABASE', emoji:'🌐', type:'database', section:'Core Navigation', offline:false, date:'Mar 18', suggestion:'Core DB. Canonical task/event repo.', dup:false },
+  { id:'2e73d54361c180ec8712d321c64b2ead', title:'Master Tag List', emoji:'🏷', type:'note', section:'Core Navigation', offline:true, date:'Feb 20', suggestion:'Move inside RESOURCE VAULT.', dup:false },
+  { id:'3033d54361c180ba9379d3c0c060e3bd', title:'Base Camp', emoji:'⛺', type:'notebook', section:'Core Navigation', offline:false, date:'Mar 18', suggestion:'Clarify role vs HOME.', dup:false },
+  { id:'2ef3d54361c180068593fab39e5a969a', title:'📱 MOBILE HUB', emoji:'📱', type:'notebook', section:'Core Navigation', offline:true, date:'Feb 20', suggestion:'Keep for mobile-first access.', dup:false },
+
+  // WHOLESALING
+  { id:'2e63d54361c180ffb425ec94cfac1811', title:'Wholesaling HQ', emoji:'💰', type:'notebook', section:'Wholesaling', offline:false, date:'Mar 18', suggestion:'Primary hub. Consolidate all REI pages.', dup:false },
+  { id:'31a3d54361c180358ee6d5d6d84bac9c', title:'Wholesaling 101', emoji:'📗', type:'notebook', section:'Wholesaling', offline:false, date:'Mar 7', suggestion:'Move under Wholesaling HQ.', dup:false },
+  { id:'2e63d54361c18082bd1ad51035a37ed5', title:'Wholesaling Pipline', emoji:'🔁', type:'notebook', section:'Wholesaling', offline:false, date:'Jan 30', suggestion:'Typo. Merge with HQ pipeline section.', dup:true },
+  { id:'3223d54361c180db8565cf1bee783789', title:'🎯 Gameplan — Q1 2026 (Active)', emoji:'🎯', type:'note', section:'Wholesaling', offline:false, date:'Mar 13', suggestion:'Active Q1 copy. Q2 pending subpage added.', dup:false },
+  { id:'3223d54361c180e499ddd989b38d6d9e', title:'📋 [TEMPLATE] Gameplan — Pending Update', emoji:'📋', type:'template', section:'Wholesaling', offline:false, date:'Mar 13', suggestion:'Locked template. Needs unlock + update.', dup:false },
+  { id:'31a3d54361c1803d98aaddd33b35a40a', title:'First Deal Playbook', emoji:'📋', type:'notebook', section:'Wholesaling', offline:false, date:'Mar 5', suggestion:'Move under Wholesaling HQ.', dup:false },
+  { id:'31a3d54361c180dfac3aff577d4f67c1', title:'Market Check', emoji:'📊', type:'note', section:'Wholesaling', offline:false, date:'Mar 10', suggestion:'Move under Wholesaling HQ.', dup:false },
+  { id:'3183d54361c180b6aa29cd2e338d8722', title:"Zach Ginn's FULL Wholesaling Course", emoji:'🎓', type:'notebook', section:'Wholesaling', offline:false, date:'Mar 3', suggestion:'Move under REI Learning Hub.', dup:false },
+  { id:'3183d54361c180d3b92dcdfedaf8b9b6', title:'Wholesaling Slide', emoji:'📊', type:'note', section:'Wholesaling', offline:false, date:'Mar 4', suggestion:'Move under Wholesaling HQ or archive.', dup:false },
+  { id:'2e63d54361c180e88274e48d0c415612', title:'Skool - Wholesaling Real Estate', emoji:'🏫', type:'note', section:'Wholesaling', offline:false, date:'Mar 4', suggestion:'Move under REI Learning Hub.', dup:false },
+  { id:'3183d54361c180f6af1ccb8adf71d417', title:'REI - Learning Hub Template', emoji:'🏛', type:'notebook', section:'Wholesaling', offline:false, date:'Mar 17', suggestion:'Active hub or template? Clarify + rename.', dup:false },
+  { id:'2f83d54361c1806c8772c990cf9fafe2', title:'REI', emoji:'🏘', type:'notebook', section:'Wholesaling', offline:false, date:'Mar 17', suggestion:'Overlaps Wholesaling HQ — merge or archive.', dup:true },
+  { id:'3223d54361c1806d8352f7c5101ca9e9', title:'Marketing Plan & Launch Strategy', emoji:'📣', type:'notebook', section:'Wholesaling', offline:false, date:'Mar 13', suggestion:'Move under Wholesaling HQ.', dup:false },
+  { id:'3223d54361c18027a530c8a9291e0630', title:'Replit to Google Play Store Guide', emoji:'📱', type:'note', section:'Wholesaling', offline:false, date:'Mar 13', suggestion:'Move under Dev / AeonFlez.', dup:false },
+
+  // JOURNAL & PERSONAL
+  { id:'3053d54361c180b59ba1d021dc2772ff', title:'#Journal/Diary', emoji:'📔', type:'notebook', section:'Journal & Personal', offline:true, date:'Mar 18', suggestion:'Top notebook. Generate dashboard.', dup:false },
+  { id:'2e63d54361c18095a249ce873ef1acef', title:'Brain Dump', emoji:'🧠', type:'note', section:'Journal & Personal', offline:true, date:'Mar 17', suggestion:'Keep as quick-capture note.', dup:false },
+  { id:'3223d54361c18081b500f0e2930c0852', title:'420 Journal', emoji:'🌿', type:'notebook', section:'Journal & Personal', offline:false, date:'Mar 13', suggestion:'Nest under #Journal/Diary.', dup:false },
+  { id:'3223d54361c180b18ac1e3d7c244f9f5', title:'September 18th, 2024', emoji:'📅', type:'note', section:'Journal & Personal', offline:false, date:'Mar 13', suggestion:'Dated entry. Move under Journal.', dup:false },
+  { id:'2f53d54361c18006a99fd0bbd171217b', title:'The Clutter', emoji:'🗂', type:'note', section:'Journal & Personal', offline:false, date:'Mar 16', suggestion:'Staging area. Sort regularly.', dup:false },
+
+  // FINANCE
+  { id:'2e53d54361c181808d4cd1fe8d73c247', title:'Budget', emoji:'💵', type:'notebook', section:'Finance', offline:false, date:'Feb 20', suggestion:'Core notebook. Generate dashboard.', dup:false },
+  { id:'2e53d54361c181d2a5e3c9b3c491b654', title:'A Savings Dashboard (Live)', emoji:'💰', type:'note', section:'Finance', offline:false, date:'Jan 11', suggestion:'Active dashboard — keep in place.', dup:false },
+  { id:'2e53d54361c181f4beebdb1bff73a312', title:'[TEMPLATE] Savings Dashboard', emoji:'📋', type:'template', section:'Finance', offline:false, date:'Jan 12', suggestion:'Template copy — remember to lock.', dup:false },
+  { id:'2e63d54361c181adb009f7d50536269a', title:'Resource Dashboard', emoji:'📊', type:'note', section:'Finance', offline:false, date:'Jan 30', suggestion:'Clarify: under Budget or RESOURCE VAULT?', dup:false },
+
+  // GOALS & PLANNING
+  { id:'2e63d54361c18078af7be26da936a61d', title:'Goals & Planning', emoji:'🎯', type:'notebook', section:'Goals & Planning', offline:false, date:'Mar 18', suggestion:'Core notebook. Consider dashboard.', dup:false },
+  { id:'30d3d54361c1809fba23effe3d52fdf3', title:'Habit Tracker', emoji:'✅', type:'notebook', section:'Goals & Planning', offline:false, date:'Mar 18', suggestion:'Move under Goals & Planning.', dup:false },
+
+  // RESOURCE VAULT
+  { id:'2e63d54361c180d882a2e6cacd9577f3', title:'RESOURCE VAULT', emoji:'🗄', type:'vault', section:'Resource Vault', offline:false, date:'Mar 18', suggestion:'Primary Vault. Add sub-vaults for tasks/events/inventory.', dup:false },
+  { id:'3233d54361c180a78a3addabda44ee88', title:'Stock Inventory & Purchase Research', emoji:'💊', type:'notebook', section:'Resource Vault', offline:false, date:'Mar 16', suggestion:'Moved to RESOURCE VAULT. ✓ Done.', dup:false },
+  { id:'3233d54361c1809c982ffa855678f28d', title:'🗑 [DELETE ME] Stock wrapper', emoji:'🗑', type:'note', section:'Resource Vault', offline:false, date:'Mar 16', suggestion:'Empty shell — safe to delete manually.', dup:true },
+
+  // DEV & AI
+  { id:'30d3d54361c18055a2dec39dac79e775', title:'Chat Logs', emoji:'💬', type:'notebook', section:'Dev & AI', offline:false, date:'Feb 20', suggestion:'Move under Dev section. Generate dashboard.', dup:false },
+  { id:'3223d54361c180e3a0a4e24c3a305665', title:'Fin Bot Chat Logs', emoji:'🤖', type:'note', section:'Dev & AI', offline:false, date:'Mar 13', suggestion:'Move under Chat Logs notebook.', dup:false },
+  { id:'3043d54361c180a3bae5ced606c9d94e', title:'2/10/26 - Chat AnythingLLM', emoji:'🗣', type:'note', section:'Dev & AI', offline:false, date:'Feb 11', suggestion:'Move under Chat Logs.', dup:false },
+  { id:'2f83d54361c1801b898ec4931dd10509', title:'AnythingLLM', emoji:'🧩', type:'notebook', section:'Dev & AI', offline:false, date:'Mar 17', suggestion:'Move under Dev section.', dup:false },
+  { id:'30d3d54361c18088a0a2c28cf4cdaf5d', title:'AI Bot Builds', emoji:'🔧', type:'notebook', section:'Dev & AI', offline:false, date:'Feb 20', suggestion:'Move under Dev section.', dup:false },
+  { id:'2f43d54361c180a4ab1bd0096ebdad96', title:'Prompt Training P2', emoji:'📝', type:'note', section:'Dev & AI', offline:false, date:'Mar 13', suggestion:'Move under Dev or RESOURCE VAULT.', dup:false },
+  { id:'2f43d54361c1809686cfcf9dcbfb4076', title:'Prompt Training P1', emoji:'📝', type:'note', section:'Dev & AI', offline:false, date:'Mar 13', suggestion:'Move under Dev or RESOURCE VAULT.', dup:false },
+  { id:'32a3d54361c18143aa46d604f6922949', title:'Claude-MCP Server Fix — Android & Windows', emoji:'🛠', type:'note', section:'Dev & AI', offline:false, date:'Mar 21', suggestion:'Keep. Move under Dev.', dup:false },
+  { id:'3223d54361c1801d8f4cd25a13404d1c', title:'New page', emoji:'❓', type:'note', section:'Dev & AI', offline:false, date:'Mar 17', suggestion:'Untitled — rename or delete.', dup:false },
+
+  // LAPTOP / HARDWARE
+  { id:'3293d54361c180928dfbdd6644bcbe04', title:'💻 Hardware Upgrade Roadmap — 2026', emoji:'💻', type:'notebook', section:'Hardware', offline:false, date:'Mar 20', suggestion:'Active research. Core hardware notebook.', dup:false },
+  { id:'3293d54361c180b8b3b5d8e46479ea1c', title:'📍 Equipment Database Setup — Start Here', emoji:'📍', type:'note', section:'Hardware', offline:false, date:'Mar 20', suggestion:'Moved under Hardware Roadmap. ✓ Done.', dup:false },
+  { id:'3293d54361c180a89a80f0f0226a2902', title:'🗑 [DELETE ME] README duplicate', emoji:'🗑', type:'note', section:'Hardware', offline:false, date:'Mar 20', suggestion:'Exact copy — safe to delete manually.', dup:true },
+  { id:'3293d54361c18089b7c5c4caab972f47', title:'Quick_Start_Guide', emoji:'⚡', type:'note', section:'Hardware', offline:false, date:'Mar 20', suggestion:'Move under Hardware Roadmap.', dup:false },
+  { id:'3293d54361c180418200c3eff19e109a', title:'Fix_WSL_Update_Error', emoji:'🔧', type:'note', section:'Hardware', offline:false, date:'Mar 20', suggestion:'Move under Dev & AI.', dup:false },
+  { id:'3293d54361c180e59448e45bf01c264d', title:'Notion_Setup_Walkthrough', emoji:'📖', type:'note', section:'Hardware', offline:false, date:'Mar 20', suggestion:'Move under Notion Setup Project.', dup:false },
+
+  // NOTION SETUP
+  { id:'2e73d54361c1806c8909c3d0a2a15e44', title:'Notion Setup Project', emoji:'⚙', type:'notebook', section:'Notion Setup', offline:false, date:'Jan 13', suggestion:'Archive or move under Dev section.', dup:false },
+  { id:'3253d54361c1807abd2dc062e08d81fe', title:"🧠 Rain's System Master Reference", emoji:'🧠', type:'notebook', section:'Notion Setup', offline:false, date:'Mar 16', suggestion:'Move to RESOURCE VAULT.', dup:false },
+  { id:'3253d54361c18015bc17d69eccd60395', title:'01-sessions-summary', emoji:'📋', type:'note', section:'Notion Setup', offline:false, date:'Mar 16', suggestion:'Move under Notion Setup Project.', dup:false },
+  { id:'3253d54361c180448825da4617e856ba', title:'02-system-map', emoji:'🗺', type:'note', section:'Notion Setup', offline:false, date:'Mar 16', suggestion:'Move under Notion Setup Project.', dup:false },
+  { id:'3253d54361c180899425e6b1584d4909', title:'03-notion-setup', emoji:'⚙', type:'note', section:'Notion Setup', offline:false, date:'Mar 16', suggestion:'Move under Notion Setup Project.', dup:false },
+  { id:'3253d54361c18092a22cd458bbce2377', title:'04-ai-tools', emoji:'🤖', type:'note', section:'Notion Setup', offline:false, date:'Mar 16', suggestion:'Move under Notion Setup Project.', dup:false },
+  { id:'3253d54361c180e4a2cada6e24d5a742', title:'05-amplenote-migration', emoji:'📦', type:'note', section:'Notion Setup', offline:false, date:'Mar 16', suggestion:'Move under Notion Setup Project.', dup:false },
+  { id:'3253d54361c180e49822e6f2bf72df00', title:'06-import-agent', emoji:'📥', type:'note', section:'Notion Setup', offline:false, date:'Mar 16', suggestion:'Move under Notion Setup Project.', dup:false },
+  { id:'3253d54361c180e38833c984fc054990', title:'07-claude-access', emoji:'🌐', type:'note', section:'Notion Setup', offline:false, date:'Mar 16', suggestion:'Move under Notion Setup Project.', dup:false },
+  { id:'3253d54361c180a187d2cf4eae7107f0', title:'08-device-guide', emoji:'💻', type:'note', section:'Notion Setup', offline:false, date:'Mar 16', suggestion:'Move under Notion Setup Project.', dup:false },
+  { id:'3253d54361c180de9ac4ec57e5be0e4f', title:'09-software-tracker', emoji:'📊', type:'note', section:'Notion Setup', offline:false, date:'Mar 16', suggestion:'Move under Notion Setup Project.', dup:false },
+  { id:'3253d54361c180228575faf5d55bcbbb', title:'10-next-actions', emoji:'▶', type:'note', section:'Notion Setup', offline:false, date:'Mar 16', suggestion:'Move under Notion Setup Project.', dup:false },
+
+  // TEMPLATES
+  { id:'2e63d54361c18036b192e276dacf2998', title:'Templates', emoji:'📋', type:'notebook', section:'Templates', offline:false, date:'Jan 12', suggestion:'Archive old templates. Keep actives only.', dup:false },
+  { id:'2e53d54361c180f9b803ee3a3650d58b', title:'TEMPLATES - GUIDES', emoji:'📚', type:'notebook', section:'Templates', offline:false, date:'Mar 17', suggestion:'Consolidate with Templates parent.', dup:false },
+  { id:'2e63d54361c180cc91dcccc6275ac80e', title:'Home Template', emoji:'🏠', type:'template', section:'Templates', offline:false, date:'Jan 12', suggestion:'Archive — HOME is now active.', dup:false },
+  { id:'2e63d54361c1803db0f0f051719324cb', title:'Wholesaling Pipeline Template', emoji:'🔁', type:'template', section:'Templates', offline:false, date:'Jan 12', suggestion:'Keep as template source.', dup:false },
+  { id:'2e63d54361c180adb247fee72a809462', title:'Goals & Planning Template', emoji:'🎯', type:'template', section:'Templates', offline:false, date:'Jan 12', suggestion:'Keep as template source.', dup:false },
+  { id:'2e63d54361c180e990c3ea0ae9eb9808', title:'Brain Dump Template', emoji:'🧠', type:'template', section:'Templates', offline:false, date:'Jan 12', suggestion:'Keep as template source.', dup:false },
+  { id:'2e63d54361c180ef9d02d5ee9fdc0f8f', title:'Command Center Template', emoji:'🎛', type:'template', section:'Templates', offline:false, date:'Jan 12', suggestion:'Check for duplicate Command Center template.', dup:true },
+  { id:'2e63d54361c180e08a25d51df2f8addf', title:'🪬Personal Dashboard Template🪬', emoji:'🪬', type:'template', section:'Templates', offline:false, date:'Jan 12', suggestion:'Keep. Useful base for new dashboards.', dup:false },
+];
+
+const selected = new Set();
+let currentFilter = 'all';
+let searchQuery = '';
+let activeQA = null;
+
+// ── RENDER ──────────────────────────────────────────────────
+
+function typeTag(type) {
+  const map = {
+    note:     '<span class="tag tag-note">📄 Note</span>',
+    notebook: '<span class="tag tag-notebook">📓 Notebook</span>',
+    vault:    '<span class="tag tag-vault">🗄 Vault</span>',
+    database: '<span class="tag tag-database">🗃 Database</span>',
+    template: '<span class="tag tag-template">📋 Template</span>',
+  };
+  return map[type] || type;
+}
+
+function buildTable() {
+  const tbody = document.getElementById('table-body');
+  tbody.innerHTML = '';
+  let lastSection = '';
+
+  pages.forEach(p => {
+    const matchesFilter = currentFilter === 'all' || (currentFilter === 'dup' && p.dup) || p.type === currentFilter;
+    const matchesSearch = !searchQuery || p.title.toLowerCase().includes(searchQuery) || p.section.toLowerCase().includes(searchQuery) || p.suggestion.toLowerCase().includes(searchQuery);
+    if (!matchesFilter || !matchesSearch) return;
+
+    if (p.section !== lastSection) {
+      const srow = tbody.insertRow();
+      srow.innerHTML = `<td colspan="8" class="section-header">${p.section}</td>`;
+      lastSection = p.section;
+    }
+
+    const row = tbody.insertRow();
+    if (selected.has(p.id)) row.style.background = '#7c6af710';
+    const isDup = p.dup;
+
+    row.innerHTML = `
+      <td class="sel-col"><input type="checkbox" ${selected.has(p.id) ? 'checked' : ''} onchange="toggleRow('${p.id}',this)" data-id="${p.id}"></td>
+      <td><span class="page-emoji">${p.emoji}</span><span class="page-title" title="${p.title}">${p.title}</span></td>
+      <td>${typeTag(p.type)}</td>
+      <td style="color:var(--muted);font-size:10px;white-space:nowrap">${p.section}</td>
+      <td><span class="badge ${p.offline ? 'badge-yes' : 'badge-no'}">${p.offline ? '✓' : '✗'}</span></td>
+      <td class="date-cell">${p.date}</td>
+      <td><span class="suggestion-pill ${isDup ? 'urgent' : ''}" title="${p.suggestion}">${p.suggestion}</span></td>
+      <td><a href="https://notion.so/${p.id.replace(/-/g,'')}" target="_blank" class="notion-link">↗</a></td>
+    `;
+  });
+
+  document.getElementById('sel-count').textContent = selected.size;
+}
+
+// ── SELECTION ───────────────────────────────────────────────
+
+function toggleRow(id, cb) {
+  cb.checked ? selected.add(id) : selected.delete(id);
+  updateChips();
+  document.getElementById('sel-count').textContent = selected.size;
+  buildTable();
+}
+
+function toggleAll(masterCb) {
+  document.querySelectorAll('#table-body input[type=checkbox][data-id]').forEach(cb => {
+    masterCb.checked ? selected.add(cb.dataset.id) : selected.delete(cb.dataset.id);
+  });
+  updateChips();
+  document.getElementById('sel-count').textContent = selected.size;
+  buildTable();
+}
+
+function selectAll() {
+  document.querySelectorAll('#table-body input[type=checkbox][data-id]').forEach(cb => selected.add(cb.dataset.id));
+  updateChips();
+  document.getElementById('sel-count').textContent = selected.size;
+  buildTable();
+}
+
+function clearAll() {
+  selected.clear();
+  updateChips();
+  document.getElementById('sel-count').textContent = 0;
+  buildTable();
+}
+
+function filterType(type, btn) {
+  currentFilter = type;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  buildTable();
+}
+
+function filterTable() {
+  searchQuery = document.getElementById('search-input').value.toLowerCase();
+  buildTable();
+}
+
+function updateChips() {
+  const container = document.getElementById('selected-list');
+  if (selected.size === 0) {
+    container.innerHTML = '<span style="color:var(--muted);font-size:10px">No pages selected — check rows above</span>';
+    return;
+  }
+  container.innerHTML = [...selected].map(id => {
+    const p = pages.find(x => x.id === id);
+    const title = p ? p.title.replace(/'/g, "\\'") : id.slice(0,8);
+    return `<span class="selected-chip">${p ? p.emoji : ''} ${title} <span class="rm" onclick="removeSelected('${id}')">×</span></span>`;
+  }).join('');
+}
+
+function removeSelected(id) {
+  selected.delete(id);
+  updateChips();
+  document.getElementById('sel-count').textContent = selected.size;
+  buildTable();
+}
+
+// ── QUICK ACTIONS ────────────────────────────────────────────
+
+function setQA(btn, text) {
+  document.getElementById('instruction-box').value = text;
+  document.querySelectorAll('.btn-small').forEach(b => b.classList.remove('active-qa'));
+  btn.classList.add('active-qa');
+  activeQA = text;
+}
+
+const deepDupText = `Review these pages for duplicates. For each pair or cluster:
+1. Fetch the actual page content and compare
+2. Note differences in content, structure, and parent location
+3. Identify if one is a template (locked, in Templates section, blank fill-ins) vs an active working copy
+4. Recommend one of: KEEP (active), KEEP AS TEMPLATE (rename with [TEMPLATE] prefix), MERGE (describe what to combine), MOVE (specify destination), ARCHIVE (no longer needed), or DELETE (exact duplicate, safe to remove)
+5. Explain your reasoning for each recommendation`;
+
+function deepDupReview(btn) {
+  if (selected.size === 0) {
+    pages.forEach(p => { if (p.dup) selected.add(p.id); });
+    updateChips();
+    document.getElementById('sel-count').textContent = selected.size;
+    buildTable();
+  }
+  document.getElementById('instruction-box').value = deepDupText;
+  document.querySelectorAll('.btn-small').forEach(b => b.classList.remove('active-qa'));
+  btn.classList.add('active-qa');
+}
+
+// ── SUBMIT ───────────────────────────────────────────────────
+
+function buildPrompt() {
+  const instruction = document.getElementById('instruction-box').value.trim();
+  if (selected.size === 0 && !instruction) return null;
+
+  const pageList = selected.size > 0
+    ? [...selected].map(id => {
+        const p = pages.find(x => x.id === id);
+        return p ? `- ${p.emoji} ${p.title} [${p.type}] | Section: ${p.section} | Last edited: ${p.date} | ID: ${id}` : `- ID: ${id}`;
+      }).join('\n')
+    : '(no specific pages selected — applying to full workspace)';
+
+  return `## Notion Workspace Request\n\n**Selected pages (${selected.size}):**\n${pageList}\n\n**Instruction:**\n${instruction || '(no instruction provided)'}`;
+}
+
+function openInClaude() {
+  if (selected.size === 0 && !document.getElementById('instruction-box').value.trim()) {
+    toast('Select pages or write an instruction first', true); return;
+  }
+  const prompt = buildPrompt();
+  // claude.ai/new accepts a ?q= param that pre-fills the message input
+  const url = 'https://claude.ai/new?q=' + encodeURIComponent(prompt);
+  window.open(url, '_blank');
+  toast('Opening Claude in a new tab ✓');
+}
+
+function copyPrompt() {
+  const prompt = buildPrompt();
+  if (!prompt) { toast('Nothing to copy yet', true); return; }
+  navigator.clipboard.writeText(prompt).then(() => {
+    toast('Prompt copied to clipboard ✓');
+  }).catch(() => {
+    // fallback: show in a temporary textarea
+    const ta = document.createElement('textarea');
+    ta.value = prompt;
+    ta.style.cssText = 'position:fixed;top:-9999px';
+    document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    toast('Copied (fallback) ✓');
+  });
+}
+
+// ── TOAST ────────────────────────────────────────────────────
+
+let toastTimer;
+function toast(msg, isError) {
+  const el = document.getElementById('toast');
+  el.textContent = (isError ? '⚠ ' : '✓ ') + msg;
+  el.className = 'toast show' + (isError ? ' error' : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.classList.remove('show'); }, 2800);
+}
+
+buildTable();
+</script>
+</body>
+</html>

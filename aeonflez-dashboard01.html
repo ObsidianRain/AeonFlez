@@ -1,0 +1,1955 @@
+        <!-- Notebook Page -->
+        <div class="page" id="notebook">
+            <div class="page-header">
+                <h1 class="page-title">Journals & Jots</h1>
+                <p class="page-subtitle">Advanced note-taking with AI assistance</p>
+            </div>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <h3>📝 Note Editor</h3>
+                    <div class="note-toolbar">
+                        <button class="btn-small btn-primary" onclick="newNote()">New Note</button>
+                        <button class="btn-small btn-secondary" onclick="startAudioNote()">🎤 Audio Note</button>
+                        <button class="btn-small btn-secondary" onclick="shareNote()">📤 Share</button>
+                        <button class="btn-small btn-secondary" onclick="askAI()">🤖 AI Assistant</button>
+                    </div>
+                    <div class="input-group">
+                        <label>Title</label>
+                        <input type="text" class="form-input" placeholder="Note title..." id="noteTitle">
+                    </div>
+                    <textarea class="form-input note-editor" rows="8" placeholder="Start writing your thoughts here..." id="noteContent"></textarea>
+                    <div class="note-actions">
+                        <button class="btn btn-primary" onclick="saveNote()">Save Note</button>
+                        <button class="btn btn-secondary" onclick="useTemplate()">📋 Use Template</button>
+                        <button class="btn btn-warning" onclick="webClipper()">🌐 Web Clipper</button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>🗂️ Projects & Tasks</h3>
+                    <div class="project-manager">
+                        <div class="input-group">
+                            <label>New Project</label>
+                            <input type="text" class="form-input" placeholder="Project name...">
+                            <button class="btn btn-primary" onclick="createProject()">Create</button>
+                        </div>
+                        <div class="project-list">
+                            <div class="project-item">
+                                <h4>📱 AeonFlez Development</h4>
+                                <p>3 tasks remaining</p>
+                                <button class="btn-small" onclick="viewProject('aeon')">View</button>
+                            </div>
+                            <div class="project-item">
+                                <h4>💰 Financial Planning</h4>
+                                <p>1 task remaining</p>
+                                <button class="btn-small" onclick="viewProject('finance')">View</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>📚 Templates</h3>
+                    <div class="template-grid">
+                        <div class="template-item" onclick="loadTemplate('meeting')">
+                            <h4>📋 Meeting Notes</h4>
+                            <p>Structured meeting template</p>
+                        </div>
+                        <div class="template-item" onclick="loadTemplate('daily')">
+                            <h4>📅 Daily Review</h4>
+                            <p>End-of-day reflection</p>
+                        </div>
+                        <div class="template-item" onclick="loadTemplate('project')">
+                            <h4>🎯 Project Planning</h4>
+                            <p>Goal and milestone tracker</p>
+                        </div>
+                        <div class="template-item" onclick="loadTemplate('brainstorm')">
+                            <h4>💡 Brainstorming</h4>
+                            <p>Idea generation session</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>📅 Calendar Integration</h3>
+                    <div class="calendar-notes">
+                        <p><strong>Today's Schedule:</strong></p>
+                        <div class="calendar-event">9:00 AM - Team Standup <button class="btn-small" onclick="addNoteToEvent()">+ Note</button></div>
+                        <div class="calendar-event">2:00 PM - Client Meeting <button class="btn-small" onclick="addNoteToEvent()">+ Note</button></div>
+                        <div class="calendar-event">4:30 PM - Review Session <button class="btn-small" onclick="addNoteToEvent()">+ Note</button></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🗃️ Recent Notes</h3>
+                <div class="notes-list">
+                    <div class="note-item">
+                        <div class="note-preview">
+                            <h4>Business Strategy Meeting</h4>
+                            <p>Key insights from quarterly planning session...</p>
+                            <span class="note-meta">2 hours ago • Business</span>
+                        </div>
+                        <div class="note-actions-mini">
+                            <button class="btn-mini" onclick="editNote(1)">✏️</button>
+                            <button class="btn-mini" onclick="shareNote(1)">📤</button>
+                            <button class="btn-mini" onclick="deleteNote(1)">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="note-item">
+                        <div class="note-preview">
+                            <h4>App Development Ideas</h4>
+                            <p>Feature brainstorming for next version...</p>
+                            <span class="note-meta">Yesterday • Development</span>
+                        </div>
+                        <div class="note-actions-mini">
+                            <button class="btn-mini" onclick="editNote(2)">✏️</button>
+                            <button class="btn-mini" onclick="shareNote(2)">📤</button>
+                            <button class="btn-mini" onclick="deleteNote(2)">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="note-item">
+                        <div class="note-preview">
+                            <h4>Personal Goals Q3</h4>
+                            <p>Health, finance, and career objectives...</p>
+                            <span class="note-meta">3 days ago • Personal</span>
+                        </div>
+                        <div class="note-actions-mini">
+                            <button class="btn-mini" onclick="editNote(3)">✏️</button>
+                            <button class="btn-mini" onclick="shareNote(3)">📤</button>
+                            <button class="btn-mini" onclick="deleteNote(3)">🗑️</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AeonFlez - Your Personal Command Center</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-bg: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-bg: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success-bg: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --warning-bg: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --dark-bg: #1a1a2e;
+            --darker-bg: #16213e;
+            --text-light: #ffffff;
+            --text-dark: #333333;
+            --border-radius: 15px;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --hover-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-light);
+            overflow-x: hidden;
+            padding-top: 70px;
+        }
+
+        .top-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: var(--darker-bg);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            z-index: 1001;
+            backdrop-filter: blur(10px);
+        }
+
+        .menu-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+            padding: 0 30px;
+        }
+
+        .logo-small h2 {
+            background: var(--primary-bg);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .top-nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .top-nav-link {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .top-nav-link:hover, .top-nav-link.active {
+            color: var(--text-light);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--darker-bg);
+            padding: 20px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+        }
+
+        .logo h1 {
+            background: var(--primary-bg);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo p {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-submenu {
+            list-style: none;
+            margin-left: 20px;
+            margin-top: 8px;
+        }
+
+        .nav-subitem {
+            margin-bottom: 4px;
+        }
+
+        .nav-sublink {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .nav-sublink:hover, .nav-sublink.active {
+            color: var(--text-light);
+            background: rgba(255,255,255,0.08);
+            transform: translateX(3px);
+        }
+
+        .nav-sublink .nav-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            opacity: 0.7;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .theme-icon-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .theme-icon-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .theme-icon-link:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .theme-icon {
+            font-size: 1.8rem;
+        }
+
+        .profile-container {
+            text-align: center;
+        }
+
+        .profile-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            border: 3px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .profile-image:hover {
+            border-color: #667eea;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .mango-avatar {
+            width: 50px;
+            height: 50px;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--text-light);
+            background: rgba(255,255,255,0.1);
+            transform: translateX(5px);
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            opacity: 0.8;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            min-height: 100vh;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: var(--primary-bg);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            color: rgba(255,255,255,0.6);
+            font-size: 1.1rem;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.05);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary-bg);
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+
+        .stat-card {
+            text-align: center;
+            background: var(--primary-bg);
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: rgba(255,255,255,0.8);
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--primary-bg);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--secondary-bg);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .theme-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .theme-option {
+            aspect-ratio: 1;
+            border-radius: var(--border-radius);
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-option.active {
+            border-color: #667eea;
+            transform: scale(1.05);
+        }
+
+        .theme-ocean { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .theme-sunset { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .theme-forest { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .theme-cyber { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .theme-royal { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .theme-minimal { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+
+        .financial-dashboard {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+        }
+
+        .bank-connections {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .bank-btn {
+            padding: 10px 20px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 25px;
+            background: transparent;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .bank-btn:hover, .bank-btn.connected {
+            border-color: #43e97b;
+            background: rgba(67, 233, 123, 0.1);
+        }
+
+        .sync-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: var(--success-bg);
+            color: white;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 1001;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+        }
+
+        .sync-indicator.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            margin-top: 20px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-day:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .calendar-day.today {
+            background: var(--primary-bg);
+            color: white;
+        }
+
+        .file-upload {
+            border: 2px dashed rgba(255,255,255,0.3);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .graph-container {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .graph-legend {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .legend-item a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .legend-item a:hover {
+            color: var(--text-light);
+            text-decoration: underline;
+        }
+
+        .btn-success {
+            background: var(--success-bg);
+            color: black;
+            margin-top: 10px;
+        }
+
+        .card .btn {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            text-align: left;
+            padding: 15px 20px;
+            font-weight: 600;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 20px 0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-item h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .connection-list {
+            margin-top: 20px;
+        }
+
+        .connection-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .connection-name {
+            font-weight: 600;
+        }
+
+        .connection-status.connected {
+            color: #43e97b;
+        }
+
+        .connection-status.disconnected {
+            color: #fa709a;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .btn-mini {
+            padding: 4px 8px;
+            font-size: 0.7rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 2px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .note-toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .note-editor {
+            min-height: 200px;
+            resize: vertical;
+        }
+
+        .note-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .project-manager {
+            margin-top: 15px;
+        }
+
+        .project-list {
+            margin-top: 20px;
+        }
+
+        .project-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .project-item h4 {
+            margin: 0 0 5px 0;
+            color: var(--text-light);
+        }
+
+        .project-item p {
+            margin: 0;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+        }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .template-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .template-item:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: #667eea;
+        }
+
+        .template-item h4 {
+            margin: 0 0 8px 0;
+            font-size: 1rem;
+        }
+
+        .template-item p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .calendar-notes {
+            margin-top: 15px;
+        }
+
+        .calendar-event {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .notes-list {
+            margin-top: 20px;
+        }
+
+        .note-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .note-preview {
+            flex: 1;
+        }
+
+        .note-preview h4 {
+            margin: 0 0 8px 0;
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .note-preview p {
+            margin: 0 0 8px 0;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+
+        .note-meta {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .note-actions-mini {
+            display: flex;
+            gap: 5px;
+        }
+
+        .tracker-settings {
+            margin-top: 15px;
+        }
+
+        .tracker-category {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .tracker-config {
+            margin-top: 15px;
+        }
+
+        .tracker-config h4 {
+            margin-bottom: 10px;
+            color: var(--text-light);
+        }
+
+        @media (max-width: 768px) {
+            .top-nav {
+                display: none;
+            }
+            
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            
+            .financial-dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .template-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .note-actions, .note-toolbar {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sync-indicator" id="syncIndicator">
+        ✓ Synced with AeonFlez App
+    </div>
+
+    <!-- Top Menu Bar -->
+    <header class="top-menu">
+        <div class="menu-container">
+            <div class="logo-small">
+                <h2>AeonFlez</h2>
+            </div>
+            <nav class="top-nav">
+                <a href="#" class="top-nav-link active" data-page="dashboard">Dashboard</a>
+                <a href="#" class="top-nav-link" data-page="profile">Profile</a>
+                <a href="#" class="top-nav-link" data-page="resources">Resources</a>
+                <a href="#" class="top-nav-link" data-page="logs">Logs</a>
+                <a href="#" class="top-nav-link" data-page="notebook">Journals and Jots</a>
+                <a href="#" class="top-nav-link" data-page="deepdive">Deep Dive</a>
+                <a href="#" class="top-nav-link" data-page="faq">FAQ</a>
+                <a href="#" class="top-nav-link" data-page="links">Links</a>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="sidebar">
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="#" class="nav-link active" data-page="dashboard">
+                    <span class="nav-icon">📊</span>
+                    Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="calendar">
+                    <span class="nav-icon">📅</span>
+                    Calendar
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="notebook">
+                    <span class="nav-icon">📝</span>
+                    Notebooks & Jots
+                </a>
+            </li>
+            <li class="nav-item nav-section">
+                <a href="#" class="nav-link" data-page="tracker">
+                    <span class="nav-icon">📈</span>
+                    Tracker
+                </a>
+                <ul class="nav-submenu">
+                    <li class="nav-subitem">
+                        <a href="#" class="nav-sublink" data-page="financial">
+                            <span class="nav-icon">💰</span>
+                            Financial Tracker
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="files">
+                    <span class="nav-icon">📁</span>
+                    Files
+                </a>
+            </li>
+            <li class="nav-item nav-section">
+                <a href="#" class="nav-link" data-page="resources">
+                    <span class="nav-icon">📚</span>
+                    Resources
+                </a>
+                <ul class="nav-submenu">
+                    <li class="nav-subitem">
+                        <a href="#" class="nav-sublink" data-page="logs">
+                            <span class="nav-icon">📋</span>
+                            Logs
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="settings">
+                    <span class="nav-icon">⚙️</span>
+                    Settings
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-bottom">
+            <div class="theme-icon-container">
+                <a href="#" class="theme-icon-link" data-page="themes">
+                    <span class="theme-icon">🎨</span>
+                </a>
+            </div>
+            <div class="profile-container">
+                <div class="profile-image" onclick="navigateToPage('profile')">
+                    <svg viewBox="0 0 100 100" class="mango-avatar">
+                        <defs>
+                            <linearGradient id="mangoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#FFB347;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#FF8C00;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#FF7518;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="leafGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#32CD32;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#228B22;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Mango body -->
+                        <ellipse cx="50" cy="55" rx="25" ry="30" fill="url(#mangoGradient)" />
+                        <!-- Mango highlight -->
+                        <ellipse cx="42" cy="45" rx="8" ry="12" fill="#FFD700" opacity="0.6" />
+                        <!-- Leaf -->
+                        <path d="M50 25 Q45 15 55 20 Q60 25 50 35 Z" fill="url(#leafGradient)" />
+                        <!-- Leaf vein -->
+                        <path d="M52 22 Q50 28 52 32" stroke="#228B22" stroke-width="1" fill="none" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Dashboard Page -->
+        <div class="page active" id="dashboard">
+            <div class="page-header">
+                <h1 class="page-title">Dashboard</h1>
+                <p class="page-subtitle">Your command center overview</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card stat-card">
+                    <div class="stat-number" id="totalTasks">24</div>
+                    <div class="stat-label">Active Tasks</div>
+                </div>
+                <div class="card stat-card" style="background: var(--secondary-bg);">
+                    <div class="stat-number" id="completedGoals">7</div>
+                    <div class="stat-label">Goals Completed</div>
+                </div>
+                <div class="card stat-card" style="background: var(--success-bg);">
+                    <div class="stat-number" id="upcomingEvents">12</div>
+                    <div class="stat-label">Upcoming Events</div>
+                </div>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Analytics Overview</h3>
+                    <div class="graph-container">
+                        <canvas id="overlapChart" width="400" height="250"></canvas>
+                        <div class="graph-legend">
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: rgba(102, 126, 234, 0.7);"></span>
+                                <span><a href="#" onclick="navigateToPage('financial')">Financial</a></span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: rgba(67, 233, 123, 0.7);"></span>
+                                <span><a href="#" onclick="navigateToPage('tracker')">Productivity</a></span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: rgba(250, 112, 154, 0.7);"></span>
+                                <span><a href="#" onclick="navigateToPage('tracker')">Wellness</a></span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: rgba(79, 172, 254, 0.7);"></span>
+                                <span><a href="#" onclick="navigateToPage('notebook')">Learning & Notes</a></span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: rgba(255, 193, 7, 0.7);"></span>
+                                <span><a href="#" onclick="navigateToPage('calendar')">Structure & Time</a></span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: rgba(156, 39, 176, 0.7);"></span>
+                                <span><a href="#" onclick="navigateToPage('resources')">Resources</a></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Quick Actions</h3>
+                    <button class="btn btn-warning" onclick="quickLog()">📝 Quick Log</button>
+                    <button class="btn btn-primary" onclick="addTask()">+ Add Task</button>
+                    <button class="btn btn-secondary" onclick="updateTaskProject()">🔄 Update Task/Project</button>
+                    <button class="btn btn-success" onclick="syncAll()">🔄 Sync All Data</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Financial Tracker Page -->
+        <div class="page" id="financial">
+            <div class="page-header">
+                <h1 class="page-title">Financial Tracker</h1>
+                <p class="page-subtitle">Manage your finances with smart automation</p>
+            </div>
+
+            <div class="bank-connections">
+                <button class="bank-btn connected">Chase Bank ✓</button>
+                <button class="bank-btn" onclick="connectBank('wells-fargo')">Wells Fargo</button>
+                <button class="bank-btn" onclick="connectBank('credit-karma')">Credit Karma</button>
+                <button class="bank-btn" onclick="connectBank('mint')">Mint</button>
+            </div>
+
+            <div class="financial-dashboard">
+                <div>
+                    <div class="card">
+                        <h3>Monthly Budget Overview</h3>
+                        <div class="input-group">
+                            <label>Monthly Income</label>
+                            <input type="number" class="form-input" placeholder="$5,000" id="monthlyIncome">
+                        </div>
+                        <div class="input-group">
+                            <label>Monthly Expenses</label>
+                            <input type="number" class="form-input" placeholder="$3,200" id="monthlyExpenses">
+                        </div>
+                        <button class="btn btn-primary" onclick="updateBudget()">Update Budget</button>
+                    </div>
+
+                    <div class="card">
+                        <h3>Financial Goals</h3>
+                        <div id="financialGoals">
+                            <p>🎯 Emergency Fund: $8,000 / $10,000</p>
+                            <p>🏠 House Down Payment: $15,000 / $50,000</p>
+                            <p>📈 Investment Goal: $2,000 / $5,000</p>
+                        </div>
+                        <button class="btn btn-secondary" onclick="addGoal()">+ Add New Goal</button>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="card">
+                        <h3>Upcoming Deadlines</h3>
+                        <div id="financialDeadlines">
+                            <p>⚠️ Credit Card Payment - Due in 3 days</p>
+                            <p>📅 Mortgage Payment - Due in 10 days</p>
+                            <p>💼 Tax Filing - Due in 45 days</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Recent Transactions</h3>
+                        <div id="recentTransactions">
+                            <p>-$45.20 | Grocery Store | Today</p>
+                            <p>-$12.50 | Coffee Shop | Yesterday</p>
+                            <p>+$2,500.00 | Salary Deposit | 2 days ago</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tracker Page -->
+        <div class="page" id="tracker">
+            <div class="page-header">
+                <h1 class="page-title">Tracker</h1>
+                <p class="page-subtitle">Monitor your habits and progress</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Habit Tracking</h3>
+                    <div class="input-group">
+                        <label>Track New Habit</label>
+                        <input type="text" class="form-input" placeholder="e.g., Drink 8 glasses of water">
+                    </div>
+                    <button class="btn btn-primary">Start Tracking</button>
+                </div>
+                <div class="card">
+                    <h3>Current Streaks</h3>
+                    <p>💧 Water Intake: 12 days</p>
+                    <p>🏃 Daily Exercise: 8 days</p>
+                    <p>📚 Reading: 25 days</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar Page -->
+        <div class="page" id="calendar">
+            <div class="page-header">
+                <h1 class="page-title">Calendar</h1>
+                <p class="page-subtitle">Manage your schedule and events</p>
+            </div>
+
+            <div class="card">
+                <h3>Monthly View - July 2025</h3>
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Calendar will be generated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Notebook Page -->
+        <div class="page" id="notebook">
+            <div class="page-header">
+                <h1 class="page-title">Notebook & Jots</h1>
+                <p class="page-subtitle">Capture your thoughts and ideas</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Quick Jot</h3>
+                    <textarea class="form-input" rows="4" placeholder="Write your thoughts here..."></textarea>
+                    <button class="btn btn-primary" onclick="saveJot()">Save Jot</button>
+                </div>
+                <div class="card">
+                    <h3>Recent Notes</h3>
+                    <div id="recentNotes">
+                        <p>📝 Project brainstorming session notes</p>
+                        <p>💡 App feature ideas</p>
+                        <p>📋 Meeting action items</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Files Page -->
+        <div class="page" id="files">
+            <div class="page-header">
+                <h1 class="page-title">Files</h1>
+                <p class="page-subtitle">Manage your documents and uploads</p>
+            </div>
+
+            <div class="card">
+                <div class="file-upload" onclick="document.getElementById('fileInput').click()">
+                    <h3>📁 Drop files here or click to upload</h3>
+                    <p>Supports PDF, DOC, XLS, IMG files</p>
+                    <input type="file" id="fileInput" style="display: none;" multiple>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logs Page -->
+        <div class="page" id="logs">
+            <div class="page-header">
+                <h1 class="page-title">Logs</h1>
+                <p class="page-subtitle">View system activity and sync history</p>
+            </div>
+
+            <div class="card">
+                <h3>System Logs</h3>
+                <div id="systemLogs">
+                    <p>[2025-07-02 19:32] ✅ App sync completed successfully</p>
+                    <p>[2025-07-02 19:30] 🔄 Financial data updated from Chase Bank</p>
+                    <p>[2025-07-02 19:28] 📝 New note added to notebook</p>
+                    <p>[2025-07-02 19:25] 📅 Calendar event created</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div class="page" id="settings">
+            <div class="page-header">
+                <h1 class="page-title">Settings</h1>
+                <p class="page-subtitle">Configure your AeonFlez experience</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>🔗 Connections</h3>
+                    <p>Manage API connections to external services</p>
+                    <button class="btn btn-primary" onclick="navigateToPage('connections')">Manage Connections</button>
+                </div>
+
+                <div class="card">
+                    <h3>App Sync Settings</h3>
+                    <div class="input-group">
+                        <label>Sync Interval</label>
+                        <select class="form-input">
+                            <option>Real-time</option>
+                            <option>Every 5 minutes</option>
+                            <option>Every 15 minutes</option>
+                            <option>Hourly</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary">Save Settings</button>
+                </div>
+
+                <div class="card">
+                    <h3>Notifications</h3>
+                    <label><input type="checkbox" checked> Email notifications</label><br>
+                    <label><input type="checkbox" checked> Push notifications</label><br>
+                    <label><input type="checkbox"> SMS alerts</label><br>
+                    <label><input type="checkbox" checked> Audio note transcription alerts</label>
+                </div>
+
+                <div class="card">
+                    <h3>🎯 Tracker Settings</h3>
+                    <div class="tracker-settings">
+                        <h4>Configure Tracking Categories:</h4>
+                        <div class="tracker-category">
+                            <label><input type="checkbox" checked> Financial Progress</label>
+                            <button class="btn-small btn-secondary" onclick="configureTracker('financial')">Configure</button>
+                        </div>
+                        <div class="tracker-category">
+                            <label><input type="checkbox" checked> Health & Wellness</label>
+                            <button class="btn-small btn-secondary" onclick="configureTracker('health')">Configure</button>
+                        </div>
+                        <div class="tracker-category">
+                            <label><input type="checkbox" checked> Productivity Metrics</label>
+                            <button class="btn-small btn-secondary" onclick="configureTracker('productivity')">Configure</button>
+                        </div>
+                        <div class="tracker-category">
+                            <label><input type="checkbox"> Learning Goals</label>
+                            <button class="btn-small btn-secondary" onclick="configureTracker('learning')">Configure</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Page -->
+        <div class="page" id="profile">
+            <div class="page-header">
+                <h1 class="page-title">Profile</h1>
+                <p class="page-subtitle">Manage your personal settings and preferences</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Personal Information</h3>
+                    <div class="input-group">
+                        <label>Full Name</label>
+                        <input type="text" class="form-input" placeholder="John Doe">
+                    </div>
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input type="email" class="form-input" placeholder="john@example.com">
+                    </div>
+                    <div class="input-group">
+                        <label>Time Zone</label>
+                        <select class="form-input">
+                            <option>Pacific Time (PT)</option>
+                            <option>Mountain Time (MT)</option>
+                            <option>Central Time (CT)</option>
+                            <option>Eastern Time (ET)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Tracking Configuration</h3>
+                    <p><a href="#" onclick="navigateToPage('settings')" class="btn btn-primary">⚙️ Go to Settings</a></p>
+                    <div class="tracker-config">
+                        <h4>Active Trackers:</h4>
+                        <label><input type="checkbox" checked> Financial Progress</label><br>
+                        <label><input type="checkbox" checked> Health & Wellness</label><br>
+                        <label><input type="checkbox" checked> Productivity Metrics</label><br>
+                        <label><input type="checkbox"> Learning Goals</label><br>
+                        <label><input type="checkbox"> Social Activities</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources Page -->
+        <div class="page" id="resources">
+            <div class="page-header">
+                <h1 class="page-title">Resources</h1>
+                <p class="page-subtitle">Tools, guides, and helpful materials</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>📚 Learning Resources</h3>
+                    <ul>
+                        <li><a href="#">Personal Finance 101</a></li>
+                        <li><a href="#">Productivity Techniques</a></li>
+                        <li><a href="#">Health & Wellness Guide</a></li>
+                        <li><a href="#">Goal Setting Strategies</a></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>🔧 Tools & Templates</h3>
+                    <ul>
+                        <li><a href="#">Budget Template</a></li>
+                        <li><a href="#">Habit Tracker Sheet</a></li>
+                        <li><a href="#">Project Planning Template</a></li>
+                        <li><a href="#">Daily Review Template</a></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>📱 App Integrations</h3>
+                    <ul>
+                        <li><a href="#">Mint Integration Guide</a></li>
+                        <li><a href="#">Google Calendar Setup</a></li>
+                        <li><a href="#">Notion Connection</a></li>
+                        <li><a href="#">Todoist Sync</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deep Dive Page -->
+        <div class="page" id="deepdive">
+            <div class="page-header">
+                <h1 class="page-title">Deep Dive</h1>
+                <p class="page-subtitle">Advanced analytics and insights</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>🔍 Data Analysis</h3>
+                    <button class="btn btn-primary">Generate Monthly Report</button>
+                    <button class="btn btn-secondary">Trend Analysis</button>
+                    <button class="btn btn-warning">Predictive Insights</button>
+                </div>
+                <div class="card">
+                    <h3>📊 Custom Metrics</h3>
+                    <div class="input-group">
+                        <label>Create Custom Metric</label>
+                        <input type="text" class="form-input" placeholder="Metric name">
+                    </div>
+                    <div class="input-group">
+                        <label>Data Source</label>
+                        <select class="form-input">
+                            <option>Financial Data</option>
+                            <option>Health Data</option>
+                            <option>Productivity Data</option>
+                            <option>Custom Input</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Page -->
+        <div class="page" id="faq">
+            <div class="page-header">
+                <h1 class="page-title">FAQ</h1>
+                <p class="page-subtitle">Frequently Asked Questions</p>
+            </div>
+
+            <div class="card">
+                <div class="faq-item">
+                    <h3>How do I connect my bank account?</h3>
+                    <p>Go to Financial Tracker → Bank Connections → Select your bank and follow the secure OAuth process.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Is my data secure?</h3>
+                    <p>Yes, we use bank-level encryption and never store your login credentials. All data is encrypted at rest and in transit.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>How often does the app sync?</h3>
+                    <p>By default, syncing happens in real-time. You can adjust this in Settings → Sync Preferences.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Can I export my data?</h3>
+                    <p>Yes, go to Settings → Data Management → Export Data to download your information in various formats.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Links Page -->
+        <div class="page" id="links">
+            <div class="page-header">
+                <h1 class="page-title">Links</h1>
+                <p class="page-subtitle">Quick access to external resources</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>🏦 Financial Services</h3>
+                    <ul>
+                        <li><a href="#" target="_blank">Chase Online Banking</a></li>
+                        <li><a href="#" target="_blank">Credit Karma</a></li>
+                        <li><a href="#" target="_blank">Mint</a></li>
+                        <li><a href="#" target="_blank">Personal Capital</a></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>📱 Productivity Apps</h3>
+                    <ul>
+                        <li><a href="#" target="_blank">Todoist</a></li>
+                        <li><a href="#" target="_blank">Notion</a></li>
+                        <li><a href="#" target="_blank">Google Calendar</a></li>
+                        <li><a href="#" target="_blank">Evernote</a></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>🎯 Goal Tracking</h3>
+                    <ul>
+                        <li><a href="#" target="_blank">Habitica</a></li>
+                        <li><a href="#" target="_blank">Strava</a></li>
+                        <li><a href="#" target="_blank">MyFitnessPal</a></li>
+                        <li><a href="#" target="_blank">Goodreads</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Connections Page -->
+        <div class="page" id="connections">
+            <div class="page-header">
+                <h1 class="page-title">Connections</h1>
+                <p class="page-subtitle">Manage API connections to external services</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Add New API Connection</h3>
+                    <div class="input-group">
+                        <label>Service Name</label>
+                        <input type="text" class="form-input" placeholder="e.g., Todoist, Mint, Google Calendar">
+                    </div>
+                    <div class="input-group">
+                        <label>API Key</label>
+                        <input type="password" class="form-input" placeholder="Enter your API key">
+                    </div>
+                    <div class="input-group">
+                        <label>API Endpoint</label>
+                        <input type="url" class="form-input" placeholder="https://api.service.com/v1/">
+                    </div>
+                    <button class="btn btn-primary" onclick="addAPIConnection()">Connect Service</button>
+                </div>
+                <div class="card">
+                    <h3>Active Connections</h3>
+                    <div class="connection-list">
+                        <div class="connection-item">
+                            <span class="connection-name">Google Calendar</span>
+                            <span class="connection-status connected">✓ Connected</span>
+                            <button class="btn-small btn-secondary" onclick="testConnection('gcal')">Test</button>
+                        </div>
+                        <div class="connection-item">
+                            <span class="connection-name">Chase Bank</span>
+                            <span class="connection-status connected">✓ Connected</span>
+                            <button class="btn-small btn-secondary" onclick="testConnection('chase')">Test</button>
+                        </div>
+                        <div class="connection-item">
+                            <span class="connection-name">Todoist</span>
+                            <span class="connection-status disconnected">⚠ Disconnected</span>
+                            <button class="btn-small btn-warning" onclick="reconnect('todoist')">Reconnect</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page" id="themes">
+            <div class="page-header">
+                <h1 class="page-title">Themes</h1>
+                <p class="page-subtitle">Customize your visual experience</p>
+            </div>
+
+            <div class="card">
+                <h3>Choose Your Style</h3>
+                <div class="theme-selector">
+                    <div class="theme-option theme-ocean active" onclick="setTheme('ocean')"></div>
+                    <div class="theme-option theme-sunset" onclick="setTheme('sunset')"></div>
+                    <div class="theme-option theme-forest" onclick="setTheme('forest')"></div>
+                    <div class="theme-option theme-cyber" onclick="setTheme('cyber')"></div>
+                    <div class="theme-option theme-royal" onclick="setTheme('royal')"></div>
+                    <div class="theme-option theme-minimal" onclick="setTheme('minimal')"></div>
+                </div>
+                <button class="btn btn-primary" onclick="saveTheme()">Save Theme</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Navigation functionality
+        document.querySelectorAll('.nav-link, .nav-sublink, .top-nav-link, .theme-icon-link').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const pageId = this.getAttribute('data-page');
+                if (pageId) {
+                    navigateToPage(pageId);
+                }
+            });
+        });
+
+        function navigateToPage(pageId) {
+            // Remove active class from all links and pages
+            document.querySelectorAll('.nav-link, .nav-sublink, .top-nav-link, .theme-icon-link').forEach(l => l.classList.remove('active'));
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+            // Add active class to corresponding links and page
+            document.querySelectorAll(`[data-page="${pageId}"]`).forEach(l => l.classList.add('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        // Enhanced graph functionality
+        function createOverlapChart() {
+            const canvas = document.getElementById('overlapChart');
+            const ctx = canvas.getContext('2d');
+
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Create gradient fills
+            const gradients = {
+                financial: createGradient(ctx, 'rgba(102, 126, 234, 0.7)', 'rgba(102, 126, 234, 0.3)'),
+                health: createGradient(ctx, 'rgba(67, 233, 123, 0.7)', 'rgba(67, 233, 123, 0.3)'),
+                productivity: createGradient(ctx, 'rgba(250, 112, 154, 0.7)', 'rgba(250, 112, 154, 0.3)'),
+                learning: createGradient(ctx, 'rgba(79, 172, 254, 0.7)', 'rgba(79, 172, 254, 0.3)')
+            };
+
+            // Draw overlapping areas
+            drawArea(ctx, gradients.financial, generateWaveData(0));
+            drawArea(ctx, gradients.health, generateWaveData(50));
+            drawArea(ctx, gradients.productivity, generateWaveData(100));
+            drawArea(ctx, gradients.learning, generateWaveData(150));
+        }
+
+        function createGradient(ctx, start, end) {
+            const gradient = ctx.createLinearGradient(0, 0, 0, 250);
+            gradient.addColorStop(0, start);
+            gradient.addColorStop(1, end);
+            return gradient;
+        }
+
+        function generateWaveData(offset) {
+            const points = [];
+            for (let i = 0; i <= 400; i += 10) {
+                const y = 125 + Math.sin((i + offset) * 0.02) * 40 + Math.cos((i + offset) * 0.01) * 20;
+                points.push({ x: i, y: y });
+            }
+            return points;
+        }
+
+        function drawArea(ctx, gradient, points) {
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, 250);
+
+            points.forEach(point => {
+                ctx.lineTo(point.x, point.y);
+            });
+
+            ctx.lineTo(400, 250);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        // Quick Log functionality
+        function quickLog() {
+            const logType = prompt('Log type (task/note/expense/health):') || 'general';
+            const logContent = prompt('Enter your log:');
+            if (logContent) {
+                const timestamp = new Date().toISOString();
+                const logEntry = `${timestamp.split('T')[0]}-${logType}-none-${logContent}-general-quicklog`;
+
+                // Add to logs page
+                addLogEntry(logEntry);
+                alert('Log saved successfully!');
+                simulateSync();
+            }
+        }
+
+        function addLogEntry(entry) {
+            const logsContainer = document.getElementById('systemLogs');
+            const logElement = document.createElement('p');
+            logElement.textContent = `[${new Date().toLocaleString()}] 📝 ${entry}`;
+            logsContainer.insertBefore(logElement, logsContainer.firstChild);
+        }
+
+        // Notebook functionality
+        function newNote() {
+            document.getElementById('noteTitle').value = '';
+            document.getElementById('noteContent').value = '';
+        }
+
+        function startAudioNote() {
+            alert('🎤 Audio recording started... (Feature coming soon!)');
+        }
+
+        function saveNote() {
+            const title = document.getElementById('noteTitle').value;
+            const content = document.getElementById('noteContent').value;
+            if (title && content) {
+                alert(`Note "${title}" saved successfully!`);
+                simulateSync();
+            } else {
+                alert('Please enter both title and content.');
+            }
+        }
+
+        function shareNote() {
+            alert('📤 Share options: Email, Link, Export (Feature coming soon!)');
+        }
+
+        function askAI() {
+            const question = prompt('Ask AI about your notes:');
+            if (question) {
+                alert('🤖 AI Response: Based on your notes, here are some insights... (Feature coming soon!)');
+            }
+        }
+
+        function useTemplate() {
+            const templates = ['Meeting Notes', 'Daily Review', 'Project Planning', 'Brainstorming'];
+            const choice = prompt(`Choose template:\n${templates.map((t, i) => `${i + 1}. ${t}`).join('\n')}`);
+            if (choice) {
+                loadTemplate(templates[parseInt(choice) - 1] || 'meeting');
+            }
+        }
+
+        function loadTemplate(templateType) {
+            const templates = {
+                meeting: {
+                    title: 'Meeting Notes - ' + new Date().toLocaleDateString(),
+                    content: '# Meeting Notes\n\n**Date:** \n**Attendees:** \n**Agenda:** \n\n## Discussion Points\n\n## Action Items\n\n## Next Steps\n'
+                },
+                daily: {
+                    title: 'Daily Review - ' + new Date().toLocaleDateString(),
+                    content: '# Daily Review\n\n## Accomplishments\n\n## Challenges\n\n## Tomorrow\'s Priorities\n\n## Gratitude\n'
+                },
+                project: {
+                    title: 'Project Planning',
+                    content: '# Project Planning\n\n**Project Name:** \n**Goal:** \n**Timeline:** \n\n## Milestones\n\n## Resources Needed\n\n## Success Metrics\n'
+                },
+                brainstorm: {
+                    title: 'Brainstorming Session',
+                    content: '# Brainstorming\n\n**Topic:** \n**Goal:** \n\n## Ideas\n\n## Next Actions\n'
+                }
+            };
+
+            const template = templates[templateType] || templates.meeting;
+            document.getElementById('noteTitle').value = template.title;
+            document.getElementById('noteContent').value = template.content;
+        }
+
+        function webClipper() {
+            const url = prompt('Enter URL to clip:');
+            if (url) {
+                alert('🌐 Web content clipped and added to notes! (Feature coming soon!)');
+            }
+        }
+
+        function createProject() {
+            const projectName = prompt('Enter project name:');
+            if (projectName) {
+                alert(`Project "${projectName}" created successfully!`);
+                simulateSync();
+            }
+        }
+
+        // API Connections
+        function addAPIConnection() {
+            const service = document.querySelector('input[placeholder*="Todoist"]').value;
+            const apiKey = document.querySelector('input[type="password"]').value;
+            const endpoint = document.querySelector('input[type="url"]').value;
+
+            if (service && apiKey && endpoint) {
+                alert(`Connection to ${service} established successfully!`);
+                simulateSync();
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+
+        function testConnection(service) {
+            alert(`Testing connection to ${service}... ✅ Connection successful!`);
+        }
+
+        function reconnect(service) {
+            alert(`Reconnecting to ${service}... ✅ Reconnected successfully!`);
+        }
+
+        // Tracker configuration
+        function configureTracker(type) {
+            alert(`Opening ${type} tracker configuration... (Feature coming soon!)`);
+            navigateToPage('tracker');
+        }
+
+        // Simulate real-time sync with app
+        function simulateSync() {
+            const indicator = document.getElementById('syncIndicator');
+            indicator.classList.add('show');
+
+            setTimeout(() => {
+                indicator.classList.remove('show');
+            }, 2000);
+        }
+
+        // Calendar generation
+        function generateCalendar() {
+            const calendarGrid = document.getElementById('calendarGrid');
+            const today = new Date().getDate();
+
+            // Days of week headers
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            days.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.textContent = day;
+                dayHeader.style.fontWeight = 'bold';
+                dayHeader.style.padding = '10px';
+                dayHeader.style.textAlign = 'center';
+                calendarGrid.appendChild(dayHeader);
+            });
+
+            // Generate calendar days (simplified)
+            for (let i = 1; i <= 31; i++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                if (i === today) dayElement.classList.add('today');
+                dayElement.textContent = i;
+                calendarGrid.appendChild(dayElement);
+            }
+        }
+
+        // App functionality
+        function addTask() {
+            const task = prompt('Enter a new task:');
+            if (task) {
+                alert('Task added: ' + task);
+                simulateSync();
+            }
+        }
+
+        function updateTaskProject() {
+            const update = prompt('Enter task/project update:');
+            if (update) {
+                alert('Task/Project updated: ' + update);
+                simulateSync();
+            }
+        }
+
+        function syncAll() {
+            alert('Syncing all data with AeonFlez app...');
+            simulateSync();
+        }
+
+        function connectBank(bank) {
+            alert(`Connecting to ${bank}...`);
+            simulateSync();
+        }
+
+        function updateBudget() {
+            alert('Budget updated successfully!');
+            simulateSync();
+        }
+
+        function addGoal() {
+            const goal = prompt('Enter your financial goal:');
+            if (goal) {
+                alert('Goal added: ' + goal);
+                simulateSync();
+            }
+        }
+
+        function saveJot() {
+            alert('Jot saved successfully!');
+            simulateSync();
+        }
+
+        function setTheme(themeName) {
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Apply theme (simplified - in real app, this would change CSS variables)
+            document.body.setAttribute('data-theme', themeName);
+        }
+
+        function saveTheme() {
+            alert('Theme saved successfully!');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function () {
+            generateCalendar();
+            createOverlapChart();
+
+            // Simulate periodic sync
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    simulateSync();
+                }
+            }, 30000);
+        });
+
+        // File upload handling
+        document.getElementById('fileInput').addEventListener('change', function (e) {
+            const files = Array.from(e.target.files);
+            alert(`${files.length} file(s) uploaded successfully!`);
+            simulateSync();
+        });
+        // Add these missing functions before the closing </script> tag
+
+    function addTask() {
+    const task = prompt('Enter a new task:');
+    if (task) {
+    alert('Task added: ' + task);
+    simulateSync();
+    }
+    }
+
+    function updateTaskProject() {
+    const update = prompt('Enter task/project update:');
+    if (update) {
+    alert('Task/Project updated: ' + update);
+    simulateSync();
+    }
+    }
+
+    function editNote(id) {
+    alert('Editing note ' + id + '...');
+    }
+
+    function shareNote(id) {
+    alert('Sharing note ' + id + '...');
+    }
+
+    function deleteNote(id) {
+    if (confirm('Delete this note?')) {
+    alert('Note ' + id + ' deleted');
+    }
+    }
+
+    function addNoteToEvent() {
+    alert('Adding note to calendar event...');
+    }
+
+    function viewProject(id) {
+    alert('Opening project: ' + id);
+    }
+    </script>
+</body>
+</html>
