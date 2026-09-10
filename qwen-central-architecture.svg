@@ -1,0 +1,329 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1600" y2="900" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#07111E"/>
+      <stop offset="0.45" stop-color="#0A1424"/>
+      <stop offset="1" stop-color="#09121D"/>
+    </linearGradient>
+
+    <linearGradient id="panelGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0F1E31" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#0B1727" stop-opacity="0.98"/>
+    </linearGradient>
+
+    <linearGradient id="cardGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#11233A"/>
+      <stop offset="1" stop-color="#0D1A2B"/>
+    </linearGradient>
+
+    <linearGradient id="accentLine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#C300FF"/>
+      <stop offset="1" stop-color="#FF4DD8"/>
+    </linearGradient>
+
+    <linearGradient id="cyanGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#39D7FF"/>
+      <stop offset="1" stop-color="#1EA7FF"/>
+    </linearGradient>
+
+    <linearGradient id="greenGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#31E6A8"/>
+      <stop offset="1" stop-color="#15B97A"/>
+    </linearGradient>
+
+    <linearGradient id="orangeGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFB454"/>
+      <stop offset="1" stop-color="#FF7A1A"/>
+    </linearGradient>
+
+    <linearGradient id="pinkGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FF61E6"/>
+      <stop offset="1" stop-color="#C93BFF"/>
+    </linearGradient>
+
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+
+    <filter id="glowPink" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="b"/>
+      <feColorMatrix in="b" type="matrix"
+        values="1 0 0 0 0.78
+                0 1 0 0 0
+                0 0 1 0 0.9
+                0 0 0 1 0"/>
+    </filter>
+
+    <filter id="glowBlue" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="b"/>
+      <feColorMatrix in="b" type="matrix"
+        values="1 0 0 0 0.1
+                0 1 0 0 0.65
+                0 0 1 0 1
+                0 0 0 1 0"/>
+    </filter>
+
+    <filter id="gridBlur">
+      <feGaussianBlur stdDeviation="0.25"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bgGrad)"/>
+
+  <g opacity="0.22" filter="url(#gridBlur)">
+    <path d="M0 100H1600M0 180H1600M0 260H1600M0 340H1600M0 420H1600M0 500H1600M0 580H1600M0 660H1600M0 740H1600M0 820H1600" stroke="#17324D"/>
+    <path d="M100 0V900M220 0V900M340 0V900M460 0V900M580 0V900M700 0V900M820 0V900M940 0V900M1060 0V900M1180 0V900M1300 0V900M1420 0V900M1540 0V900" stroke="#17324D"/>
+  </g>
+
+  <rect x="0" y="0" width="1600" height="72" fill="#08111C" fill-opacity="0.55"/>
+  <path d="M0 72H1600" stroke="#17304A"/>
+
+  <g transform="translate(40 18)">
+    <rect x="0" y="0" width="176" height="36" rx="10" fill="#0F2135" stroke="#23415E"/>
+    <rect x="14" y="9" width="18" height="18" rx="5" fill="url(#pinkGrad)"/>
+    <path d="M20 14L24 18L20 22" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="44" y="24" fill="#EAF3FF" font-size="16" font-family="Inter, Arial, sans-serif" font-weight="700">LLM Hub</text>
+  </g>
+
+  <g transform="translate(260 20)">
+    <rect x="0" y="0" width="560" height="32" rx="10" fill="#0D1B2D" stroke="#223D58"/>
+    <circle cx="18" cy="16" r="5" stroke="#7C95B3" stroke-width="1.5"/>
+    <path d="M22 20L27 25" stroke="#7C95B3" stroke-width="1.5" stroke-linecap="round"/>
+    <text x="38" y="21" fill="#7C95B3" font-size="13" font-family="Inter, Arial, sans-serif">Search connectors, prompts, files, emails, web tools…</text>
+  </g>
+
+  <g transform="translate(1356 18)">
+    <rect x="0" y="0" width="56" height="36" rx="10" fill="#0F2135" stroke="#23415E"/>
+    <path d="M18 18H38M18 12H38M18 24H38" stroke="#DCE8F7" stroke-width="2" stroke-linecap="round"/>
+    <rect x="74" y="0" width="130" height="36" rx="10" fill="#132741" stroke="#2A4A69"/>
+    <text x="101" y="23" fill="#F4F8FF" font-size="13" font-family="Inter, Arial, sans-serif" font-weight="600">Live Assist</text>
+  </g>
+
+  <g transform="translate(24 96)">
+    <rect x="0" y="0" width="280" height="780" rx="22" fill="url(#panelGrad)" stroke="#1A314A" filter="url(#softShadow)"/>
+
+    <text x="24" y="34" fill="#9DB3CA" font-size="12" font-family="Inter, Arial, sans-serif" letter-spacing="1.5">WORKSPACE</text>
+
+    <g transform="translate(20 54)">
+      <rect x="0" y="0" width="240" height="64" rx="16" fill="#12253B" stroke="#264A6A"/>
+      <rect x="14" y="14" width="36" height="36" rx="10" fill="#243D5B"/>
+      <text x="66" y="26" fill="#EAF3FF" font-size="16" font-family="Inter, Arial, sans-serif" font-weight="700">Qwen Central</text>
+      <text x="66" y="46" fill="#88A1BC" font-size="12" font-family="Inter, Arial, sans-serif">Desktop / Web dashboard</text>
+    </g>
+
+    <text x="24" y="154" fill="#9DB3CA" font-size="12" font-family="Inter, Arial, sans-serif" letter-spacing="1.5">NAVIGATION</text>
+
+    <g transform="translate(16 170)">
+      <rect x="0" y="0" width="248" height="48" rx="14" fill="#152A42" stroke="#2F5477"/>
+      <rect x="0" y="0" width="4" height="48" rx="2" fill="url(#accentLine)"/>
+      <text x="20" y="30" fill="#FFFFFF" font-size="14" font-family="Inter, Arial, sans-serif" font-weight="600">Dashboard</text>
+    </g>
+
+    <g transform="translate(16 226)">
+      <rect x="0" y="0" width="248" height="48" rx="14" fill="#0E1C2E" stroke="#1F3954"/>
+      <text x="20" y="30" fill="#AFC2D9" font-size="14" font-family="Inter, Arial, sans-serif">Connectors</text>
+    </g>
+
+    <g transform="translate(16 282)">
+      <rect x="0" y="0" width="248" height="48" rx="14" fill="#0E1C2E" stroke="#1F3954"/>
+      <text x="20" y="30" fill="#AFC2D9" font-size="14" font-family="Inter, Arial, sans-serif">Prompt Library</text>
+    </g>
+
+    <g transform="translate(16 338)">
+      <rect x="0" y="0" width="248" height="48" rx="14" fill="#0E1C2E" stroke="#1F3954"/>
+      <text x="20" y="30" fill="#AFC2D9" font-size="14" font-family="Inter, Arial, sans-serif">Automation Flows</text>
+    </g>
+
+    <g transform="translate(16 394)">
+      <rect x="0" y="0" width="248" height="48" rx="14" fill="#0E1C2E" stroke="#1F3954"/>
+      <text x="20" y="30" fill="#AFC2D9" font-size="14" font-family="Inter, Arial, sans-serif">Agents</text>
+    </g>
+
+    <g transform="translate(16 450)">
+      <rect x="0" y="0" width="248" height="48" rx="14" fill="#0E1C2E" stroke="#1F3954"/>
+      <text x="20" y="30" fill="#AFC2D9" font-size="14" font-family="Inter, Arial, sans-serif">Logs</text>
+    </g>
+
+    <g transform="translate(20 556)">
+      <rect x="0" y="0" width="240" height="184" rx="18" fill="#0E1C2E" stroke="#203A55"/>
+      <text x="18" y="28" fill="#E7F0FB" font-size="14" font-family="Inter, Arial, sans-serif" font-weight="700">Quick Status</text>
+
+      <circle cx="24" cy="54" r="5" fill="#1BE38C"/>
+      <text x="38" y="59" fill="#AFC2D9" font-size="13" font-family="Inter, Arial, sans-serif">Notion connected</text>
+
+      <circle cx="24" cy="84" r="5" fill="#1BE38C"/>
+      <text x="38" y="89" fill="#AFC2D9" font-size="13" font-family="Inter, Arial, sans-serif">Gmail connected</text>
+
+      <circle cx="24" cy="114" r="5" fill="#1BE38C"/>
+      <text x="38" y="119" fill="#AFC2D9" font-size="13" font-family="Inter, Arial, sans-serif">Filesystem indexed</text>
+
+      <circle cx="24" cy="144" r="5" fill="#7AC8FF"/>
+      <text x="38" y="149" fill="#AFC2D9" font-size="13" font-family="Inter, Arial, sans-serif">Web tools available</text>
+    </g>
+  </g>
+
+  <g transform="translate(328 96)">
+    <rect x="0" y="0" width="1248" height="780" rx="22" fill="url(#panelGrad)" stroke="#1A314A" filter="url(#softShadow)"/>
+
+    <text x="28" y="38" fill="#F2F7FF" font-size="26" font-family="Inter, Arial, sans-serif" font-weight="700">Centralized &amp; Connected LLM Dashboard</text>
+    <text x="28" y="64" fill="#87A0BB" font-size="14" font-family="Inter, Arial, sans-serif">A desktop/web app with additional help, live orchestration, and visual diagrams</text>
+
+    <g transform="translate(28 92)">
+      <rect x="0" y="0" width="276" height="120" rx="18" fill="url(#cardGrad)" stroke="#213D59"/>
+      <text x="20" y="30" fill="#9AB2CC" font-size="12" font-family="Inter, Arial, sans-serif" letter-spacing="1.2">MODEL CORE</text>
+      <text x="20" y="64" fill="#FFFFFF" font-size="30" font-family="Inter, Arial, sans-serif" font-weight="800">Qwen</text>
+      <text x="20" y="90" fill="#8DA6C2" font-size="13" font-family="Inter, Arial, sans-serif">Unified reasoning, routing, tool use</text>
+      <rect x="196" y="22" width="58" height="28" rx="14" fill="#182E48" stroke="#31587F"/>
+      <text x="212" y="40" fill="#DFF3FF" font-size="12" font-family="Inter, Arial, sans-serif">Live</text>
+    </g>
+
+    <g transform="translate(320 92)">
+      <rect x="0" y="0" width="276" height="120" rx="18" fill="url(#cardGrad)" stroke="#213D59"/>
+      <text x="20" y="30" fill="#9AB2CC" font-size="12" font-family="Inter, Arial, sans-serif" letter-spacing="1.2">MCP / TOOL BUS</text>
+      <text x="20" y="64" fill="#FFFFFF" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="800">Connectors Active</text>
+      <text x="20" y="90" fill="#8DA6C2" font-size="13" font-family="Inter, Arial, sans-serif">Notion, Gmail, files, web, VS Code</text>
+      <text x="224" y="44" fill="#57E7A6" font-size="22" font-family="Inter, Arial, sans-serif" font-weight="700">05</text>
+    </g>
+
+    <g transform="translate(612 92)">
+      <rect x="0" y="0" width="276" height="120" rx="18" fill="url(#cardGrad)" stroke="#213D59"/>
+      <text x="20" y="30" fill="#9AB2CC" font-size="12" font-family="Inter, Arial, sans-serif" letter-spacing="1.2">AUTOMATION</text>
+      <text x="20" y="64" fill="#FFFFFF" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="800">Prompt Flows</text>
+      <text x="20" y="90" fill="#8DA6C2" font-size="13" font-family="Inter, Arial, sans-serif">Reusable chains and task templates</text>
+      <rect x="204" y="22" width="50" height="28" rx="14" fill="#182E48" stroke="#31587F"/>
+      <text x="219" y="40" fill="#FFC88A" font-size="12" font-family="Inter, Arial, sans-serif">12</text>
+    </g>
+
+    <g transform="translate(904 92)">
+      <rect x="0" y="0" width="316" height="120" rx="18" fill="url(#cardGrad)" stroke="#213D59"/>
+      <text x="20" y="30" fill="#9AB2CC" font-size="12" font-family="Inter, Arial, sans-serif" letter-spacing="1.2">HELP MODE</text>
+      <text x="20" y="64" fill="#FFFFFF" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="800">Additional Help On</text>
+      <text x="20" y="90" fill="#8DA6C2" font-size="13" font-family="Inter, Arial, sans-serif">Guided suggestions, diagrams, code actions</text>
+      <circle cx="270" cy="38" r="10" fill="#1BE38C"/>
+      <circle cx="270" cy="38" r="18" fill="#1BE38C" opacity="0.18" filter="url(#glowBlue)"/>
+    </g>
+
+    <g transform="translate(28 240)">
+      <rect x="0" y="0" width="782" height="488" rx="22" fill="#0D1B2D" stroke="#213D59"/>
+      <text x="24" y="34" fill="#F4F8FF" font-size="18" font-family="Inter, Arial, sans-serif" font-weight="700">System Diagram</text>
+      <text x="24" y="58" fill="#88A1BC" font-size="13" font-family="Inter, Arial, sans-serif">Central orchestration similar to a connected coding assistant workspace</text>
+
+      <g transform="translate(28 112)">
+        <rect x="0" y="0" width="126" height="56" rx="12" fill="#22344A" stroke="#405D7C"/>
+        <text x="36" y="34" fill="#F3F8FF" font-size="20" font-family="Inter, Arial, sans-serif" font-weight="700">Qwen</text>
+      </g>
+
+      <g transform="translate(210 124)">
+        <text x="0" y="20" fill="#C7D6E7" font-size="16" font-family="Inter, Arial, sans-serif" font-weight="600">MCPs</text>
+      </g>
+
+      <path d="M154 140H214" stroke="url(#accentLine)" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="154" cy="140" r="4" fill="#F04DFF"/>
+      <circle cx="214" cy="140" r="4" fill="#F04DFF"/>
+
+      <path d="M258 140H314" stroke="url(#accentLine)" stroke-width="4" stroke-linecap="round"/>
+      <path d="M258 140C280 140 286 110 314 110" stroke="url(#accentLine)" stroke-width="4" stroke-linecap="round"/>
+      <path d="M258 140C280 140 286 170 314 170" stroke="url(#accentLine)" stroke-width="4" stroke-linecap="round"/>
+
+      <g transform="translate(314 92)">
+        <text x="0" y="22" fill="#FFFFFF" font-size="15" font-family="Inter, Arial, sans-serif">Notion</text>
+        <text x="0" y="82" fill="#FFFFFF" font-size="15" font-family="Inter, Arial, sans-serif">Filesystem</text>
+        <text x="0" y="52" fill="#FFFFFF" font-size="15" font-family="Inter, Arial, sans-serif">Gmail</text>
+      </g>
+
+      <path d="M392 140H540" stroke="url(#accentLine)" stroke-width="4" stroke-linecap="round"/>
+      <g transform="translate(540 112)">
+        <text x="0" y="22" fill="#FFFFFF" font-size="15" font-family="Inter, Arial, sans-serif">Friction Free Testing Prompts</text>
+      </g>
+
+      <path d="M744 140H758" stroke="url(#accentLine)" stroke-width="4" stroke-linecap="round"/>
+      <text x="24" y="230" fill="#9DB3CA" font-size="12" font-family="Inter, Arial, sans-serif" letter-spacing="1.2">EXAMPLE ACTION</text>
+      <text x="24" y="262" fill="#E8F0FA" font-size="16" font-family="Inter, Arial, sans-serif" font-style="italic">"Read the most recent email in my Gmail."</text>
+
+      <g transform="translate(22 300)">
+        <rect x="0" y="0" width="738" height="150" rx="18" fill="#0B1727" stroke="#1B334A"/>
+        <text x="18" y="28" fill="#9DB3CA" font-size="12" font-family="Inter, Arial, sans-serif" letter-spacing="1.2">EXTENDED DESKTOP / WEB FLOW</text>
+
+        <g transform="translate(18 54)">
+          <rect x="0" y="0" width="120" height="50" rx="12" fill="#11253B" stroke="#294967"/>
+          <text x="26" y="31" fill="#FFFFFF" font-size="15" font-family="Inter, Arial, sans-serif" font-weight="600">User Query</text>
+
+          <rect x="156" y="0" width="130" height="50" rx="12" fill="#11253B" stroke="#294967"/>
+          <text x="181" y="31" fill="#FFFFFF" font-size="15" font-family="Inter, Arial, sans-serif" font-weight="600">Qwen Router</text>
+
+          <rect x="304" y="0" width="144" height="50" rx="12" fill="#11253B" stroke="#294967"/>
+          <text x="321" y="31" fill="#FFFFFF" font-size="15" font-family="Inter, Arial, sans-serif" font-weight="600">Tool Selection</text>
+
+          <rect x="466" y="0" width="120" height="50" rx="12" fill="#11253B" stroke="#294967"/>
+          <text x="500" y="31" fill="#FFFFFF" font-size="15" font-family="Inter, Arial, sans-serif" font-weight="600">Action</text>
+
+          <rect x="604" y="0" width="116" height="50" rx="12" fill="#11253B" stroke="#294967"/>
+          <text x="624" y="31" fill="#FFFFFF" font-size="15" font-family="Inter, Arial, sans-serif" font-weight="600">Answer</text>
+
+          <path d="M120 25H156M286 25H304M448 25H466M586 25H604" stroke="#39D7FF" stroke-width="3" stroke-linecap="round"/>
+          <path d="M147 19L156 25L147 31" stroke="#39D7FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M295 19L304 25L295 31" stroke="#39D7FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M457 19L466 25L457 31" stroke="#39D7FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M595 19L604 25L595 31" stroke="#39D7FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+      </g>
+    </g>
+
+    <g transform="translate(832 240)">
+      <rect x="0" y="0" width="388" height="232" rx="22" fill="#0D1B2D" stroke="#213D59"/>
+      <text x="22" y="34" fill="#F4F8FF" font-size="18" font-family="Inter, Arial, sans-serif" font-weight="700">Connector Stack</text>
+
+      <g transform="translate(22 58)">
+        <rect x="0" y="0" width="344" height="38" rx="12" fill="#11253B" stroke="#2A4968"/>
+        <rect x="10" y="9" width="20" height="20" rx="6" fill="url(#cyanGrad)"/>
+        <text x="42" y="25" fill="#EAF3FF" font-size="14" font-family="Inter, Arial, sans-serif">Notion knowledge sync</text>
+        <text x="292" y="25" fill="#57E7A6" font-size="12" font-family="Inter, Arial, sans-serif">Online</text>
+      </g>
+
+      <g transform="translate(22 106)">
+        <rect x="0" y="0" width="344" height="38" rx="12" fill="#11253B" stroke="#2A4968"/>
+        <rect x="10" y="9" width="20" height="20" rx="6" fill="url(#orangeGrad)"/>
+        <text x="42" y="25" fill="#EAF3FF" font-size="14" font-family="Inter, Arial, sans-serif">Gmail read / draft / search</text>
+        <text x="292" y="25" fill="#57E7A6" font-size="12" font-family="Inter, Arial, sans-serif">Online</text>
+      </g>
+
+      <g transform="translate(22 154)">
+        <rect x="0" y="0" width="344" height="38" rx="12" fill="#11253B" stroke="#2A4968"/>
+        <rect x="10" y="9" width="20" height="20" rx="6" fill="url(#greenGrad)"/>
+        <text x="42" y="25" fill="#EAF3FF" font-size="14" font-family="Inter, Arial, sans-serif">Local filesystem indexing</text>
+        <text x="292" y="25" fill="#57E7A6" font-size="12" font-family="Inter, Arial, sans-serif">Online</text>
+      </g>
+    </g>
+
+    <g transform="translate(832 488)">
+      <rect x="0" y="0" width="388" height="240" rx="22" fill="#0D1B2D" stroke="#213D59"/>
+      <text x="22" y="34" fill="#F4F8FF" font-size="18" font-family="Inter, Arial, sans-serif" font-weight="700">Additional Help</text>
+      <text x="22" y="58" fill="#88A1BC" font-size="13" font-family="Inter, Arial, sans-serif">Assistive features included in the UI</text>
+
+      <g transform="translate(22 82)">
+        <rect x="0" y="0" width="344" height="44" rx="12" fill="#11253B" stroke="#2A4968"/>
+        <circle cx="20" cy="22" r="6" fill="#39D7FF"/>
+        <text x="38" y="27" fill="#EAF3FF" font-size="14" font-family="Inter, Arial, sans-serif">Diagram generation - architecture and flows</text>
+      </g>
+
+      <g transform="translate(22 136)">
+        <rect x="0" y="0" width="344" height="44" rx="12" fill="#11253B" stroke="#2A4968"/>
+        <circle cx="20" cy="22" r="6" fill="#FF61E6"/>
+        <text x="38" y="27" fill="#EAF3FF" font-size="14" font-family="Inter, Arial, sans-serif">Contextual coding help - Visual Studio / VS Code</text>
+      </g>
+
+      <g transform="translate(22 190)">
+        <rect x="0" y="0" width="344" height="28" rx="10" fill="#0B1727" stroke="#1E3955"/>
+        <rect x="0" y="0" width="286" height="28" rx="10" fill="url(#accentLine)"/>
+        <text x="14" y="19" fill="#FFFFFF" font-size="12" font-family="Inter, Arial, sans-serif">Readiness: 83%</text>
+      </g>
+    </g>
+
+    <g transform="translate(28 744)">
+      <rect x="0" y="0" width="1192" height="22" rx="11" fill="#0B1727" stroke="#1B334A"/>
+      <rect x="0" y="0" width="826" height="22" rx="11" fill="url(#accentLine)"/>
+      <circle cx="826" cy="11" r="8" fill="#FFD2F7" filter="url(#glowPink)"/>
+      <text x="18" y="15" fill="#FFFFFF" font-size="12" font-family="Inter, Arial, sans-serif">Workflow health / orchestration throughput</text>
+    </g>
+  </g>
+</svg>
