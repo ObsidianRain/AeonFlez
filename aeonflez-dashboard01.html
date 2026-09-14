@@ -1,4 +1,4 @@
-        <!-- Notebook Page -->
+        <!--
         <div class="page" id="notebook">
             <div class="page-header">
                 <h1 class="page-title">Journals & Jots</h1>
@@ -125,7 +125,9 @@
                     </div>
                 </div>
             </div>
-        </div><!DOCTYPE html>
+        </div>
+        -->
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -367,6 +369,9 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.92);
         }
 
         .nav-link:hover, .nav-link.active {
@@ -382,10 +387,20 @@
             opacity: 0.8;
         }
 
+        .quick-actions-card {
+            max-width: 320px;
+            align-self: start;
+        }
+
+        .quick-actions-card .btn {
+            margin-bottom: 10px;
+        }
+
         .main-content {
             margin-left: 280px;
             padding: 30px;
             min-height: 100vh;
+            min-width: 0;
         }
 
         .page {
@@ -423,7 +438,7 @@
 
         .card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
             gap: 25px;
             margin-bottom: 30px;
         }
@@ -907,6 +922,12 @@
             color: var(--text-light);
         }
 
+        @media (max-width: 1100px) {
+            .top-nav {
+                display: none;
+            }
+        }
+
         @media (max-width: 768px) {
             .top-nav {
                 display: none;
@@ -923,6 +944,23 @@
             .main-content {
                 margin-left: 0;
                 padding: 20px;
+            }
+
+            .sidebar {
+                top: 70px;
+                height: calc(100vh - 70px);
+            }
+
+            .menu-container {
+                padding: 0 15px;
+            }
+
+            .logo-small h2 {
+                font-size: 1.4rem;
+            }
+
+            .page-title {
+                font-size: clamp(1.8rem, 7vw, 2.5rem);
             }
             
             .financial-dashboard {
@@ -1116,11 +1154,14 @@
                     </div>
                 </div>
                 <div class="card">
+                    <div class="quick-actions-card">
                     <h3>Quick Actions</h3>
-                    <button class="btn btn-warning" onclick="quickLog()">📝 Quick Log</button>
+                    <button class="btn btn-warning" onclick="navigateToPage('quicklog')">📝 Quick Log</button>
+                    <button class="btn btn-primary" onclick="navigateToPage('files')">📁 Upload File</button>
                     <button class="btn btn-primary" onclick="addTask()">+ Add Task</button>
                     <button class="btn btn-secondary" onclick="updateTaskProject()">🔄 Update Task/Project</button>
                     <button class="btn btn-success" onclick="syncAll()">🔄 Sync All Data</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1265,6 +1306,42 @@
                     <input type="file" id="fileInput" style="display: none;" multiple>
                 </div>
             </div>
+        </div>
+
+        <!-- Quick Log Page -->
+        <div class="page" id="quicklog">
+                <div class="page-header">
+                    <h1 class="page-title">Quick Log</h1>
+                    <p class="page-subtitle">Capture an activity without leaving your workspace</p>
+                </div>
+                <div class="card">
+                    <div class="input-group">
+                        <label>Log Type</label>
+                        <select class="form-input" id="logType">
+                            <option value="task">Task</option>
+                            <option value="note">Note</option>
+                            <option value="expense">Expense</option>
+                            <option value="health">Health</option>
+                            <option value="general">General</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Log Content</label>
+                        <textarea class="form-input" rows="4" id="logContent" placeholder="What happened?"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label>Category</label>
+                        <input type="text" class="form-input" id="logCategory" placeholder="e.g., work, personal, health">
+                    </div>
+                    <div class="input-group">
+                        <label>Tags</label>
+                        <input type="text" class="form-input" id="logTags" placeholder="comma, separated, tags">
+                    </div>
+                    <div class="file-upload-actions">
+                        <button class="btn btn-primary" onclick="saveQuickLog()">Save Log</button>
+                        <button class="btn btn-secondary" onclick="navigateToPage('dashboard')">Cancel</button>
+                    </div>
+                </div>
         </div>
 
         <!-- Logs Page -->
@@ -1669,17 +1746,7 @@
 
         // Quick Log functionality
         function quickLog() {
-            const logType = prompt('Log type (task/note/expense/health):') || 'general';
-            const logContent = prompt('Enter your log:');
-            if (logContent) {
-                const timestamp = new Date().toISOString();
-                const logEntry = `${timestamp.split('T')[0]}-${logType}-none-${logContent}-general-quicklog`;
-
-                // Add to logs page
-                addLogEntry(logEntry);
-                alert('Log saved successfully!');
-                simulateSync();
-            }
+            navigateToPage('quicklog');
         }
 
         function addLogEntry(entry) {
@@ -1687,6 +1754,25 @@
             const logElement = document.createElement('p');
             logElement.textContent = `[${new Date().toLocaleString()}] 📝 ${entry}`;
             logsContainer.insertBefore(logElement, logsContainer.firstChild);
+        }
+
+        function saveQuickLog() {
+            const content = document.getElementById('logContent').value.trim();
+            if (!content) {
+                alert('Please enter log content.');
+                return;
+            }
+
+            const type = document.getElementById('logType').value;
+            const category = document.getElementById('logCategory').value.trim() || 'general';
+            const tags = document.getElementById('logTags').value.trim();
+            const tagSuffix = tags ? ` (${tags})` : '';
+            addLogEntry(`${type}: ${content} [${category}]${tagSuffix}`);
+            document.getElementById('logContent').value = '';
+            document.getElementById('logCategory').value = '';
+            document.getElementById('logTags').value = '';
+            alert('Log saved successfully!');
+            navigateToPage('logs');
         }
 
         // Notebook functionality
