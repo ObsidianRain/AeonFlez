@@ -88,13 +88,15 @@
 
         .top-nav {
             display: flex;
-            gap: 30px;
+            gap: 12px;
+            align-items: center;
         }
 
         .top-nav-link {
             color: rgba(255,255,255,0.7);
             text-decoration: none;
-            font-weight: 500;
+            font-size: 1rem;
+            font-weight: 700;
             padding: 10px 15px;
             border-radius: 8px;
             transition: all 0.3s ease;
@@ -306,6 +308,7 @@
             grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
             gap: 25px;
             margin-bottom: 30px;
+            min-width: 0;
         }
 
         .card {
@@ -538,6 +541,14 @@
         .graph-container {
             position: relative;
             margin: 20px 0;
+            min-width: 0;
+        }
+
+        .graph-container canvas {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            height: auto;
         }
 
         .graph-legend {
@@ -682,6 +693,31 @@
         .top-nav-dropdown-menu a:hover,
         .top-nav-dropdown-menu a.active {
             background: rgba(255,255,255,0.12);
+        }
+
+        .dashboard-header {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(260px, 0.7fr);
+            gap: 24px;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .dashboard-title-section,
+        .inspiration-section,
+        .inspirational-section,
+        .analytics-header {
+            min-width: 0;
+        }
+
+        .inspirational-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .inspirational-quote {
+            overflow-wrap: anywhere;
         }
 
         .note-toolbar {
@@ -840,6 +876,10 @@
             .financial-dashboard {
                 grid-template-columns: 1fr;
             }
+
+            .dashboard-header {
+                grid-template-columns: 1fr;
+            }
             
             .graph-legend {
                 grid-template-columns: repeat(2, 1fr);
@@ -877,6 +917,26 @@
             .main-content {
                 margin-left: 0;
                 padding: 15px;
+            }
+
+            .dashboard-header {
+                gap: 12px;
+                margin-bottom: 16px;
+            }
+
+            .analytics-header {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                align-items: center;
+            }
+
+            .chart-type-selector {
+                max-width: 100%;
+            }
+
+            .graph-legend {
+                grid-template-columns: 1fr;
             }
             
             .sidebar-toggle {
@@ -944,6 +1004,22 @@
             .page-title {
                 font-size: 1.8rem;
             }
+
+            .page-subtitle {
+                font-size: 0.95rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .inspirational-section {
+                align-items: flex-start;
+            }
+
+            .soothing-image {
+                flex: 0 0 auto;
+            }
             
             .template-grid {
                 grid-template-columns: 1fr;
@@ -986,7 +1062,6 @@
                 <div class="top-nav-dropdown">
                     <button type="button" class="top-nav-link">Resources ▾</button>
                     <div class="top-nav-dropdown-menu">
-                        <a href="#" class="top-nav-link" data-page="resources">Resources</a>
                         <a href="#" class="top-nav-link" data-page="faq">FAQ</a>
                         <a href="#" class="top-nav-link" data-page="links">Links</a>
                     </div>
