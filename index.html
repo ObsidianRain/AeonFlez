@@ -3,12 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; base-uri 'self'; form-action 'self';">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <title>AeonFlez - Your Personal Command Center</title>
+    <script>
+        (function () {
+            const themes = {
+                ocean: ['linear-gradient(135deg, #667eea 0%, #764ba2 100%)', '#1a1a2e', '#16213e'],
+                sunset: ['linear-gradient(135deg, #fa709a 0%, #fee140 100%)', '#321b2b', '#4a2035'],
+                forest: ['linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)', '#10251f', '#17382d'],
+                cyber: ['linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', '#071d2b', '#0d3044'],
+                royal: ['linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', '#29152e', '#421d45'],
+                minimal: ['linear-gradient(135deg, #667eea 0%, #764ba2 100%)', '#202124', '#303134']
+            };
+            const saved = localStorage.getItem('aeonflez-theme');
+            const theme = themes[saved] ? saved : 'ocean';
+            document.documentElement.dataset.theme = theme;
+            document.documentElement.style.setProperty('--primary-bg', themes[theme][0]);
+            document.documentElement.style.setProperty('--dark-bg', themes[theme][1]);
+            document.documentElement.style.setProperty('--darker-bg', themes[theme][2]);
+        }());
+    </script>
     <style>
         * {
             margin: 0;
@@ -71,13 +88,15 @@
 
         .top-nav {
             display: flex;
-            gap: 30px;
+            gap: 12px;
+            align-items: center;
         }
 
         .top-nav-link {
             color: rgba(255,255,255,0.7);
             text-decoration: none;
-            font-weight: 500;
+            font-size: 1rem;
+            font-weight: 700;
             padding: 10px 15px;
             border-radius: 8px;
             transition: all 0.3s ease;
@@ -166,34 +185,6 @@
             margin-top: auto;
             padding-top: 20px;
             border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .theme-icon-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .theme-icon-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            border-radius: 15px;
-            background: rgba(255,255,255,0.05);
-            border: 2px solid rgba(255,255,255,0.1);
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-        .theme-icon-link:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(255,255,255,0.2);
-            transform: translateY(-2px);
-        }
-
-        .theme-icon {
-            font-size: 1.8rem;
         }
 
         .profile-container {
@@ -317,6 +308,7 @@
             grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
             gap: 25px;
             margin-bottom: 30px;
+            min-width: 0;
         }
 
         .card {
@@ -549,6 +541,14 @@
         .graph-container {
             position: relative;
             margin: 20px 0;
+            min-width: 0;
+        }
+
+        .graph-container canvas {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            height: auto;
         }
 
         .graph-legend {
@@ -652,6 +652,72 @@
             margin: 0 2px;
             background: rgba(255,255,255,0.1);
             color: white;
+        }
+
+        .top-nav-dropdown {
+            position: relative;
+        }
+
+        .top-nav-dropdown > button {
+            border: 0;
+            cursor: pointer;
+        }
+
+        .top-nav-dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            min-width: 150px;
+            padding: 8px;
+            background: var(--darker-bg);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            z-index: 10;
+        }
+
+        .top-nav-dropdown:hover .top-nav-dropdown-menu,
+        .top-nav-dropdown:focus-within .top-nav-dropdown-menu {
+            display: grid;
+        }
+
+        .top-nav-dropdown-menu a {
+            color: var(--text-light);
+            padding: 9px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .top-nav-dropdown-menu a:hover,
+        .top-nav-dropdown-menu a.active {
+            background: rgba(255,255,255,0.12);
+        }
+
+        .dashboard-header {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(260px, 0.7fr);
+            gap: 24px;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .dashboard-title-section,
+        .inspiration-section,
+        .inspirational-section,
+        .analytics-header {
+            min-width: 0;
+        }
+
+        .inspirational-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .inspirational-quote {
+            overflow-wrap: anywhere;
         }
 
         .note-toolbar {
@@ -810,6 +876,10 @@
             .financial-dashboard {
                 grid-template-columns: 1fr;
             }
+
+            .dashboard-header {
+                grid-template-columns: 1fr;
+            }
             
             .graph-legend {
                 grid-template-columns: repeat(2, 1fr);
@@ -847,6 +917,26 @@
             .main-content {
                 margin-left: 0;
                 padding: 15px;
+            }
+
+            .dashboard-header {
+                gap: 12px;
+                margin-bottom: 16px;
+            }
+
+            .analytics-header {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                align-items: center;
+            }
+
+            .chart-type-selector {
+                max-width: 100%;
+            }
+
+            .graph-legend {
+                grid-template-columns: 1fr;
             }
             
             .sidebar-toggle {
@@ -914,6 +1004,22 @@
             .page-title {
                 font-size: 1.8rem;
             }
+
+            .page-subtitle {
+                font-size: 0.95rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .inspirational-section {
+                align-items: flex-start;
+            }
+
+            .soothing-image {
+                flex: 0 0 auto;
+            }
             
             .template-grid {
                 grid-template-columns: 1fr;
@@ -953,13 +1059,14 @@
             </div>
             <nav class="top-nav">
                 <a href="#" class="top-nav-link active" data-page="dashboard">Dashboard</a>
-                <a href="#" class="top-nav-link" data-page="profile">Profile</a>
-                <a href="#" class="top-nav-link" data-page="resources">Resources</a>
-                <a href="#" class="top-nav-link" data-page="logs">Logs</a>
-                <a href="#" class="top-nav-link" data-page="notebook">Journals and Jots</a>
-                <a href="#" class="top-nav-link" data-page="deepdive">Deep Dive</a>
-                <a href="#" class="top-nav-link" data-page="faq">FAQ</a>
-                <a href="#" class="top-nav-link" data-page="links">Links</a>
+                <div class="top-nav-dropdown">
+                    <button type="button" class="top-nav-link">Resources ▾</button>
+                    <div class="top-nav-dropdown-menu">
+                        <a href="#" class="top-nav-link" data-page="faq">FAQ</a>
+                        <a href="#" class="top-nav-link" data-page="links">Links</a>
+                    </div>
+                </div>
+                <a href="#" class="top-nav-link" data-page="notebook">Journals &amp; Jots</a>
             </nav>
         </div>
     </header>
@@ -979,29 +1086,15 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link" data-page="notebook">
-                    <span class="nav-icon">📝</span>
-                    Notebooks & Jots
-                </a>
-            </li>
-            <li class="nav-item nav-section">
-                <a href="#" class="nav-link" data-page="tracker">
-                    <span class="nav-icon">📈</span>
-                    Tracker
-                </a>
-                <ul class="nav-submenu">
-                    <li class="nav-subitem">
-                        <a href="#" class="nav-sublink" data-page="financial">
-                            <span class="nav-icon">💰</span>
-                            Financial Tracker
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="nav-item">
                 <a href="#" class="nav-link" data-page="files">
                     <span class="nav-icon">📁</span>
                     Files
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="deepdive">
+                    <span class="nav-icon">🔍</span>
+                    Deep Dive
                 </a>
             </li>
             <li class="nav-item nav-section">
@@ -1016,23 +1109,17 @@
                             Logs
                         </a>
                     </li>
+                    <li class="nav-subitem">
+                        <a href="#" class="nav-sublink" data-page="financial">
+                            <span class="nav-icon">📈</span>
+                            Tracker
+                        </a>
+                    </li>
                 </ul>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link" data-page="settings">
-                    <span class="nav-icon">⚙️</span>
-                    Settings
-                </a>
             </li>
         </ul>
         
         <div class="sidebar-bottom">
-            <div class="theme-icon-container">
-                <a href="#" class="theme-icon-link" data-page="themes">
-                    <span class="theme-icon">🎨</span>
-                    <div class="theme-preview"></div>
-                </a>
-            </div>
             <div class="profile-container">
                 <div class="profile-image" onclick="navigateToPage('profile')">
                     <svg viewBox="0 0 100 100" class="mango-avatar">
@@ -1432,6 +1519,7 @@
             
             <div class="card">
                 <h3>System Logs</h3>
+                <input type="search" class="form-input" id="logSearch" placeholder="Search logs..." oninput="filterLogs(this.value)">
                 <div id="systemLogs">
                     <p>[2025-01-03 14:32] ✅ App sync completed successfully</p>
                     <p>[2025-01-03 14:30] 🔄 Financial data updated from Chase Bank</p>
@@ -1532,7 +1620,6 @@
                 </div>
                 <div class="card">
                     <h3>Tracking Configuration</h3>
-                    <p><a href="#" onclick="navigateToPage('settings')" class="btn btn-primary">⚙️ Go to Settings</a></p>
                     <div class="tracker-config">
                         <h4>Active Trackers:</h4>
                         <label><input type="checkbox" checked> Financial Progress</label><br>
@@ -1541,6 +1628,19 @@
                         <label><input type="checkbox"> Learning Goals</label><br>
                         <label><input type="checkbox"> Social Activities</label>
                     </div>
+                </div>
+                <div class="card">
+                    <h3>Appearance / Themes</h3>
+                    <p>Choose a color scheme for AeonFlez.</p>
+                    <div class="theme-selector">
+                        <div class="theme-option theme-ocean" data-theme-option="ocean" onclick="setTheme('ocean')"></div>
+                        <div class="theme-option theme-sunset" data-theme-option="sunset" onclick="setTheme('sunset')"></div>
+                        <div class="theme-option theme-forest" data-theme-option="forest" onclick="setTheme('forest')"></div>
+                        <div class="theme-option theme-cyber" data-theme-option="cyber" onclick="setTheme('cyber')"></div>
+                        <div class="theme-option theme-royal" data-theme-option="royal" onclick="setTheme('royal')"></div>
+                        <div class="theme-option theme-minimal" data-theme-option="minimal" onclick="setTheme('minimal')"></div>
+                    </div>
+                    <button class="btn btn-primary" onclick="saveTheme()">Save Theme</button>
                 </div>
             </div>
         </div>
@@ -1727,25 +1827,6 @@
                 </div>
             </div>
         </div>
-        <div class="page" id="themes">
-            <div class="page-header">
-                <h1 class="page-title">Themes</h1>
-                <p class="page-subtitle">Customize your visual experience</p>
-            </div>
-            
-            <div class="card">
-                <h3>Choose Your Style</h3>
-                <div class="theme-selector">
-                    <div class="theme-option theme-ocean active" onclick="setTheme('ocean')"></div>
-                    <div class="theme-option theme-sunset" onclick="setTheme('sunset')"></div>
-                    <div class="theme-option theme-forest" onclick="setTheme('forest')"></div>
-                    <div class="theme-option theme-cyber" onclick="setTheme('cyber')"></div>
-                    <div class="theme-option theme-royal" onclick="setTheme('royal')"></div>
-                    <div class="theme-option theme-minimal" onclick="setTheme('minimal')"></div>
-                </div>
-                <button class="btn btn-primary" onclick="saveTheme()">Save Theme</button>
-            </div>
-        </div>
     </main>
 
     <script>
@@ -1795,7 +1876,7 @@
         }
 
         // Navigation functionality
-        document.querySelectorAll('.nav-link, .nav-sublink, .top-nav-link, .theme-icon-link').forEach(link => {
+        document.querySelectorAll('.nav-link, .nav-sublink, .top-nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const pageId = this.getAttribute('data-page');
@@ -1807,7 +1888,7 @@
 
         function navigateToPage(pageId) {
             // Remove active class from all links and pages
-            document.querySelectorAll('.nav-link, .nav-sublink, .top-nav-link, .theme-icon-link').forEach(l => l.classList.remove('active'));
+            document.querySelectorAll('.nav-link, .nav-sublink, .top-nav-link').forEach(l => l.classList.remove('active'));
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             
             // Add active class to corresponding links and page
@@ -2167,6 +2248,23 @@
             logsContainer.insertBefore(logElement, logsContainer.firstChild);
         }
 
+        // TODO: Replace this stub with the DBeaver/SQLite query once the connection details are available.
+        async function queryLogs() {
+            return [];
+        }
+
+        function filterLogs(searchTerm) {
+            const term = searchTerm.trim().toLowerCase();
+            document.querySelectorAll('#systemLogs p').forEach(entry => {
+                entry.hidden = term && !entry.textContent.toLowerCase().includes(term);
+            });
+        }
+
+        // TODO: Replace the existing financial data source with a DBeaver/SQLite query.
+        async function queryFinancialData() {
+            return { goals: [], transactions: [] };
+        }
+
         // Notebook functionality
         function newNote() {
             document.getElementById('noteTitle').value = '';
@@ -2357,16 +2455,28 @@
         }
 
         function setTheme(themeName) {
-            document.querySelectorAll('.theme-option').forEach(option => {
-                option.classList.remove('active');
+            const themes = {
+                ocean: ['linear-gradient(135deg, #667eea 0%, #764ba2 100%)', '#1a1a2e', '#16213e'],
+                sunset: ['linear-gradient(135deg, #fa709a 0%, #fee140 100%)', '#321b2b', '#4a2035'],
+                forest: ['linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)', '#10251f', '#17382d'],
+                cyber: ['linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', '#071d2b', '#0d3044'],
+                royal: ['linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', '#29152e', '#421d45'],
+                minimal: ['linear-gradient(135deg, #667eea 0%, #764ba2 100%)', '#202124', '#303134']
+            };
+            if (!themes[themeName]) {
+                throw new Error(`Unknown theme: ${themeName}`);
+            }
+            document.documentElement.dataset.theme = themeName;
+            document.documentElement.style.setProperty('--primary-bg', themes[themeName][0]);
+            document.documentElement.style.setProperty('--dark-bg', themes[themeName][1]);
+            document.documentElement.style.setProperty('--darker-bg', themes[themeName][2]);
+            document.querySelectorAll('[data-theme-option]').forEach(option => {
+                option.classList.toggle('active', option.dataset.themeOption === themeName);
             });
-            event.target.classList.add('active');
-            
-            // Apply theme (simplified - in real app, this would change CSS variables)
-            document.body.setAttribute('data-theme', themeName);
         }
 
         function saveTheme() {
+            localStorage.setItem('aeonflez-theme', document.documentElement.dataset.theme || 'ocean');
             alert('Theme saved successfully!');
         }
 
@@ -2375,6 +2485,7 @@
             generateCalendar();
             createOverlapChart();
             handleResize();
+            setTheme(localStorage.getItem('aeonflez-theme') || 'ocean');
             
             // Add resize listener
             window.addEventListener('resize', handleResize);
